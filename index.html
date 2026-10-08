@@ -68,6 +68,7 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .work { padding-block: 72px 24px; display: grid; gap: 96px; }
 .sec-label { margin: 0 0 -56px; font: 500 .8rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .feature { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.feature.flip { grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr); }
 .feature.flip .shots { order: 2; }
 .shots { display: grid; gap: 8px; min-width: 0; }
 .stage { position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #000; }
@@ -94,8 +95,31 @@ h2 { margin: 0; font: 700 clamp(2rem, 4.5vw, 3rem)/1 var(--display); text-wrap: 
 .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
 .badge { justify-self: start; font: 500 .75rem/1 var(--mono); padding: 6px 9px; border-radius: 4px; border: 1px solid var(--accent); color: var(--accent); }
 
+/* VR */
+.vr { padding-block: 72px; border-top: 1px solid var(--line); margin-top: 72px; }
+.vr-label { margin: 0 0 32px; }
+.vr-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 48px; align-items: start; }
+.vr-head { display: grid; gap: 18px; }
+.vr-role { margin: 0; font: 500 .85rem/1.4 var(--mono); color: var(--accent); }
+.vr-role span { color: var(--muted); margin: 0 6px; }
+.vr-lede { margin: 0; font-size: 1.1rem; color: var(--muted); max-width: 44ch; }
+.vr-body h3, .bw-head h3 { margin: 0 0 14px; font: 500 .8rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.did { margin: 0 0 22px; padding: 0; list-style: none; display: grid; gap: 12px; counter-reset: none; }
+.did li { position: relative; padding-left: 22px; max-width: 62ch; }
+.did li::before { content: ""; position: absolute; left: 0; top: .62em; width: 10px; height: 2px; background: var(--accent); }
+.tech { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.tech li { font: 500 .78rem/1 var(--mono); padding: 7px 9px; border-radius: 5px; background: var(--surface); border: 1px solid var(--line); }
+.built-with { margin-top: 64px; }
+.bw-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+.bw-head h3 { margin: 0; }
+.ext { color: var(--accent); font-weight: 500; text-decoration: none; border-bottom: 1px solid currentColor; }
+.tiles { margin: 16px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 8px; }
+.tiles a { display: grid; place-content: center; text-align: center; min-height: 92px; padding: 16px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); text-decoration: none; transition: border-color .15s, transform .15s; }
+.tiles a:hover { border-color: var(--accent); transform: translateY(-2px); }
+.tiles .t { font: 600 1.05rem/1.2 var(--display); }
+
 /* more */
-.more { padding-block: 72px; border-top: 1px solid var(--line); margin-top: 72px; }
+.more { padding-block: 72px; border-top: 1px solid var(--line); }
 .more .sec { margin: 0 0 28px; font: 500 .8rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 20px; }
 .card { display: grid; gap: 10px; align-content: start; padding: 24px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); }
@@ -111,14 +135,15 @@ footer p { margin: 0; color: var(--muted); }
   .feature, .feature.flip { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .feature.flip .shots { order: 0; }
   .work { gap: 72px; }
-  .sec-label { margin-bottom: -40px; }
+  .work .sec-label { margin-bottom: -40px; }
   .hero-in { padding-block: 64px 48px; }
   .mosaic { grid-template-columns: 1fr 1fr; }
   .mosaic img:nth-child(3) { display: none; }
   .hero::after { background: linear-gradient(0deg, var(--bg) 10%, color-mix(in srgb, var(--bg) 78%, transparent) 100%); }
   .bar nav a.opt { display: none; }
+  .vr-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
 }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .thumbs button { transition: none; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .thumbs button, .tiles a { transition: none; } }
 </style>
 </head>
 <body>
@@ -127,7 +152,8 @@ footer p { margin: 0; color: var(--muted); }
   <div class="wrap">
     <a class="name" href="#top">Marc de Pedro</a>
     <nav aria-label="Sections">
-      <a href="#work" class="opt">Work</a>
+      <a href="#work" class="opt">Games</a>
+      <a href="#vr" class="opt">VR</a>
       <a href="#contact" class="opt">Contact</a>
       <a href="Marc_de_Pedro_CV.pdf" class="cv">CV</a>
     </nav>
@@ -163,7 +189,7 @@ footer p { margin: 0; color: var(--muted); }
     <figure class="reel" data-src="media/reel.mp4" aria-label="Showreel"></figure>
 
     <div class="work" id="work">
-      <p class="sec-label">Selected work</p>
+      <p class="sec-label">Games</p>
 
       <article class="feature" id="deflector">
         <div class="shots" data-video="media/deflector.mp4">
@@ -231,7 +257,7 @@ footer p { margin: 0; color: var(--muted); }
           <dl class="specs">
             <div><dt>Studio</dt><dd>Bearded Pixels</dd></div>
             <div><dt>Role</dt><dd>Unity Developer</dd></div>
-            <div><dt>Team</dt><dd>3 people</dd></div>
+            <div><dt>Team</dt><dd>4 people</dd></div>
             <div><dt>Development</dt><dd>In progress</dd></div>
             <div><dt>Platform</dt><dd>PC (Steam)</dd></div>
           </dl>
@@ -239,37 +265,53 @@ footer p { margin: 0; color: var(--muted); }
         </div>
       </article>
 
-      <article class="feature flip" id="xroam">
-        <div class="shots" data-video="media/xroam.mp4">
-          <div class="stage contain"><img src="media/img/xroam-1.webp" alt="XRoam, the all-in-one LBVR solution"></div>
-        </div>
-        <div class="info">
-          <h2>XRoam</h2>
-          <dl class="specs">
-            <div><dt>Company</dt><dd>Univrse</dd></div>
-            <div><dt>Role</dt><dd>Mid Unity Developer</dd></div>
-            <div><dt>Team</dt><dd>2 programmers</dd></div>
-            <div><dt>Period</dt><dd>2024–2025</dd></div>
-            <div><dt>Platform</dt><dd>Standalone VR</dd></div>
-          </dl>
-          <div class="links"><a class="btn" href="https://solutions.xroam.com/">XRoam ↗</a></div>
-        </div>
-      </article>
     </div>
   </div>
 
+  <section class="vr" id="vr">
+    <div class="wrap">
+      <p class="sec-label vr-label">VR</p>
+      <div class="vr-grid">
+        <div class="vr-head">
+          <h2>XRoam</h2>
+          <p class="vr-role">Mid Unity Developer <span>·</span> Jan 2024 – May 2025</p>
+          <p class="vr-lede">User-friendly ecosystem for creators and operators to create, deploy and manage multi-user LBVR experiences.</p>
+          <div class="links"><a class="btn" href="https://solutions.xroam.com/">XRoam ↗</a></div>
+        </div>
+        <div class="vr-body">
+          <h3>What I did</h3>
+          <ul class="did">
+            <li>In charge of the XRoam Unity SDK, designed with the product team and built together with one other programmer.</li>
+            <li>Created editor tools that let developers build multi-user VR experiences with little or no code.</li>
+            <li>Developed the client-server layer on FishNet that keeps every headset in the same shared session.</li>
+            <li>Worked across the XR stack: OpenXR, XR Interaction Toolkit, Pico SDK and hand tracking.</li>
+            <li>Gave technical support to the experience team, integrating and troubleshooting XRoam in client projects.</li>
+          </ul>
+          <ul class="tech" aria-label="Technology">
+            <li>Unity SDK</li><li>Editor tools</li><li>FishNet</li><li>Client-server</li><li>OpenXR</li><li>XR Interaction Toolkit</li><li>Pico SDK</li><li>Hand tracking</li>
+          </ul>
+        </div>
+      </div>
+      <div class="built-with">
+        <div class="bw-head">
+          <h3>Experiences built with XRoam</h3>
+          <a class="ext" href="https://www.univr.se/projects">All Univrse projects ↗</a>
+        </div>
+        <ul class="tiles">
+          <li><a href="https://www.univr.se/project/tomorrowland"><span class="t">Tomorrowland</span></a></li>
+          <li><a href="https://www.univr.se/project/titanic"><span class="t">Titanic</span></a></li>
+          <li><a href="https://www.univr.se/project/spellbound"><span class="t">Spellbound</span></a></li>
+          <li><a href="https://www.univr.se/project/cogul"><span class="t">Cogul</span></a></li>
+          <li><a href="https://www.univr.se/project/finding-vincent"><span class="t">Finding Vincent</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="more">
     <div class="wrap">
-      <h3 class="sec">Also</h3>
+      <h3 class="sec">Teaching</h3>
       <div class="cards">
-        <div class="card">
-          <h4>Driving simulator</h4>
-          <dl class="specs">
-            <div><dt>Client</dt><dd><a href="https://cookiebox.es/">Cookie Box ↗</a></dd></div>
-            <div><dt>Studio</dt><dd>Bearded Pixels</dd></div>
-            <div><dt>Role</dt><dd>Unity Developer</dd></div>
-          </dl>
-        </div>
         <div class="card">
           <h4>“From Zero to Hero”</h4>
           <dl class="specs">
