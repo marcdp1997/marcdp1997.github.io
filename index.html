@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: dark gallery. Hero over a screenshot mosaic, optional reel, then project features alternating image side; thumbnails swap the main shot. Single dark theme on purpose: the games are dark. */
+/* Layout: dark gallery. Hero over a screenshot mosaic, then project features alternating image side; thumbnails swap the main shot, Steam trailers play on demand. Single dark theme on purpose: the games are dark. */
 :root {
   --bg: #0c0e12;
   --surface: #141820;
@@ -59,11 +59,6 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .stack { margin: 6px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px 14px; font: 400 .8rem/1 var(--mono); color: var(--muted); }
 .stack li + li::before { content: "·"; margin-right: 14px; color: var(--muted); opacity: .5; }
 
-/* reel (only shown when media/reel.mp4 exists) */
-.reel { display: none; margin: 0; }
-.reel.has-video { display: block; padding-top: 48px; }
-.reel video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; border: 1px solid var(--line); background: #000; }
-
 /* projects */
 .work { padding-block: 72px 24px; display: grid; gap: 96px; }
 .sec-label { margin: 0 0 -56px; font: 500 .8rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
@@ -75,6 +70,10 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .stage img, .stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .stage.contain img { object-fit: contain; }
 .stage video { z-index: 1; }
+.play { position: absolute; left: 14px; bottom: 14px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: 600 .9rem/1 var(--body); cursor: pointer; box-shadow: 0 4px 18px rgb(0 0 0 / .45); }
+.play svg { width: 12px; height: 12px; fill: currentColor; }
+.play:hover { filter: brightness(1.08); }
+.stage.playing .play { display: none; }
 .thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .thumbs button { padding: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: none; cursor: pointer; aspect-ratio: 16 / 9; opacity: .55; transition: opacity .15s, border-color .15s; }
 .thumbs button img { width: 100%; height: 100%; object-fit: cover; }
@@ -186,13 +185,11 @@ footer p { margin: 0; color: var(--muted); }
 
 <main>
   <div class="wrap">
-    <figure class="reel" data-src="media/reel.mp4" aria-label="Showreel"></figure>
-
     <div class="work" id="work">
       <p class="sec-label">Games</p>
 
       <article class="feature" id="deflector">
-        <div class="shots" data-video="media/deflector.mp4">
+        <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/1736550/551523/a86c25e3b011ff77da19d4791953a373c15e7436/1751025667/hls_264_master.m3u8?t=1679669634">
           <div class="stage"><img src="media/img/deflector-1.jpg" alt="Deflector gameplay screenshot"></div>
           <div class="thumbs">
             <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/deflector-1.jpg" alt=""></button>
@@ -219,7 +216,7 @@ footer p { margin: 0; color: var(--muted); }
       </article>
 
       <article class="feature flip" id="reseed">
-        <div class="shots" data-video="media/reseed.mp4">
+        <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/3954440/1740601381/3aed9861b669e9296e61c71306db50ca59ad4b82/1771756458/hls_264_master.m3u8?t=1771756754">
           <div class="stage"><img src="media/img/reseed-1.jpg" alt="RESEED gameplay screenshot"></div>
           <div class="thumbs">
             <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/reseed-1.jpg" alt=""></button>
@@ -242,7 +239,7 @@ footer p { margin: 0; color: var(--muted); }
       </article>
 
       <article class="feature" id="singular-ones">
-        <div class="shots" data-video="media/singular-ones.mp4">
+        <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/4754310/788719265/bf53c22b9369df2d5a8b7f0c2a550607ce240f05/1779184134/hls_264_master.m3u8?t=1780572088">
           <div class="stage"><img src="media/img/singular-1.jpg" alt="The Singular Ones screenshot"></div>
           <div class="thumbs">
             <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/singular-1.jpg" alt=""></button>
@@ -338,35 +335,55 @@ footer p { margin: 0; color: var(--muted); }
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.20/hls.min.js"></script>
 <script>
 (function () {
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // Plays a clip in place once its file exists; until then the screenshots stay.
-  function tryVideo(src, onReady) {
+  // Steam trailers play on demand; screenshots stay until the visitor presses Play.
+  function playTrailer(stage, url) {
     var v = document.createElement('video');
-    v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'metadata';
-    if (reduce) v.controls = true; else v.autoplay = true;
-    v.addEventListener('loadeddata', function () { onReady(v); if (!reduce) v.play().catch(function () {}); }, { once: true });
-    v.src = src;
+    v.controls = true; v.playsInline = true; v.autoplay = true;
+    if (v.canPlayType('application/vnd.apple.mpegurl')) {
+      v.src = url;
+    } else if (window.Hls && window.Hls.isSupported()) {
+      var hls = new window.Hls({ startLevel: -1 });
+      hls.loadSource(url); hls.attachMedia(v);
+      v._hls = hls;
+    } else {
+      window.open(stage.closest('.feature').querySelector('.links a').href, '_blank');
+      return;
+    }
+    stage.appendChild(v);
+    stage.classList.add('playing');
+    v.play().catch(function () {});
   }
-
-  var reel = document.querySelector('.reel');
-  if (reel) tryVideo(reel.dataset.src, function (v) { v.controls = true; reel.appendChild(v); reel.classList.add('has-video'); });
+  function stopTrailer(stage) {
+    var v = stage.querySelector('video');
+    if (!v) return;
+    v.pause();
+    if (v._hls) v._hls.destroy();
+    v.remove();
+    stage.classList.remove('playing');
+  }
 
   document.querySelectorAll('.shots').forEach(function (shots) {
     var stage = shots.querySelector('.stage');
     var main = stage.querySelector('img');
     var buttons = shots.querySelectorAll('.thumbs button');
+    var url = shots.dataset.trailer;
+    if (url) {
+      var play = document.createElement('button');
+      play.type = 'button'; play.className = 'play';
+      play.innerHTML = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>Watch trailer';
+      play.addEventListener('click', function () { playTrailer(stage, url); });
+      stage.appendChild(play);
+    }
     buttons.forEach(function (b) {
       b.addEventListener('click', function () {
-        var vid = stage.querySelector('video');
-        if (vid) { vid.pause(); vid.hidden = true; }
+        stopTrailer(stage);
         main.src = b.querySelector('img').src;
         buttons.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
       });
     });
-    if (shots.dataset.video) tryVideo(shots.dataset.video, function (v) { stage.appendChild(v); });
   });
 })();
 </script>
