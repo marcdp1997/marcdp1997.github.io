@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marc de Pedro Portfolio</title>
+<meta name="description" content="Marc de Pedro, Unity Developer in Barcelona. Gameplay, XR and multiplayer. Shipped Deflector and RESEED.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: dark gallery. Hero over a screenshot mosaic, optional reel, then project features alternating image side; thumbnails swap the main shot. Single dark theme on purpose: the games are dark. */
+:root {
+  --bg: #0c0e12;
+  --surface: #141820;
+  --line: #262b35;
+  --ink: #eef0f3;
+  --muted: #98a0ab;
+  --accent: #f0a33a;
+  --on-accent: #1a1206;
+  --display: "Chakra Petch", "Bahnschrift", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1rem/1.55 var(--body); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+img { display: block; max-width: 100%; }
+.wrap { max-width: 1200px; margin: 0 auto; padding-inline: 20px; }
+
+/* top bar */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.bar .name { font: 600 1rem/1 var(--display); letter-spacing: .03em; text-decoration: none; }
+.bar nav { display: flex; gap: 18px; align-items: center; }
+.bar nav a { font: 500 .82rem/1 var(--mono); color: var(--muted); text-decoration: none; }
+.bar nav a:hover { color: var(--accent); }
+.bar nav a.cv { color: var(--on-accent); background: var(--accent); padding: 8px 12px; border-radius: 5px; }
+.bar nav a.cv:hover { color: var(--on-accent); }
+
+/* hero */
+.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+.mosaic { position: absolute; inset: 0; display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 4px; }
+.mosaic img { width: 100%; height: 100%; object-fit: cover; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 82%, transparent) 45%, color-mix(in srgb, var(--bg) 35%, transparent) 100%), linear-gradient(0deg, var(--bg) 0%, transparent 40%); }
+.hero .wrap { position: relative; z-index: 1; }
+.hero-in { padding-block: 96px 72px; display: grid; gap: 22px; max-width: 640px; }
+.eyebrow { margin: 0; font: 500 .8rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spacing: -.01em; }
+.lede { margin: 0; font-size: 1.15rem; color: var(--muted); max-width: 46ch; }
+.lede b { color: var(--ink); font-weight: 600; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 16px; border-radius: 6px; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 80%, transparent); color: var(--ink); font: 500 .9rem/1 var(--body); text-decoration: none; cursor: pointer; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.stack { margin: 6px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px 14px; font: 400 .8rem/1 var(--mono); color: var(--muted); }
+.stack li + li::before { content: "·"; margin-right: 14px; color: var(--muted); opacity: .5; }
+
+/* reel (only shown when media/reel.mp4 exists) */
+.reel { display: none; margin: 0; }
+.reel.has-video { display: block; padding-top: 48px; }
+.reel video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 10px; border: 1px solid var(--line); background: #000; }
+
+/* projects */
+.work { padding-block: 72px 24px; display: grid; gap: 96px; }
+.sec-label { margin: 0 0 -56px; font: 500 .8rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.feature { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.feature.flip .shots { order: 2; }
+.shots { display: grid; gap: 8px; min-width: 0; }
+.stage { position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #000; }
+.stage img, .stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.stage.contain img { object-fit: contain; }
+.stage video { z-index: 1; }
+.thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.thumbs button { padding: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: none; cursor: pointer; aspect-ratio: 16 / 9; opacity: .55; transition: opacity .15s, border-color .15s; }
+.thumbs button img { width: 100%; height: 100%; object-fit: cover; }
+.thumbs button:hover, .thumbs button[aria-pressed="true"] { opacity: 1; border-color: var(--accent); }
+
+.info { display: grid; gap: 16px; align-content: center; min-width: 0; }
+.kicker { margin: 0; font: 500 .78rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+h2 { margin: 0; font: 700 clamp(2rem, 4.5vw, 3rem)/1 var(--display); text-wrap: balance; }
+.stats { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 4px 0; padding: 0; }
+.stats div { display: flex; flex-direction: column-reverse; }
+.stats dd { margin: 0; font: 600 1.7rem/1.1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums; }
+.stats dt { font-size: .8rem; color: var(--muted); }
+.specs { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.specs div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.specs dt { font: 500 .75rem/1.6 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.specs dd { margin: 0; }
+.specs a { color: var(--accent); text-decoration: none; }
+.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.badge { justify-self: start; font: 500 .75rem/1 var(--mono); padding: 6px 9px; border-radius: 4px; border: 1px solid var(--accent); color: var(--accent); }
+
+/* more */
+.more { padding-block: 72px; border-top: 1px solid var(--line); margin-top: 72px; }
+.more .sec { margin: 0 0 28px; font: 500 .8rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 20px; }
+.card { display: grid; gap: 10px; align-content: start; padding: 24px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); }
+.card h4 { margin: 0; font: 600 1.35rem/1.15 var(--display); }
+
+footer { padding-block: 72px 88px; border-top: 1px solid var(--line); }
+footer .wrap { display: grid; gap: 18px; }
+footer h2 { font-size: clamp(2rem, 5vw, 3.2rem); }
+footer p { margin: 0; color: var(--muted); }
+.email { font: 400 .95rem/1 var(--mono); color: var(--muted); user-select: all; }
+
+@media (max-width: 860px) {
+  .feature, .feature.flip { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .feature.flip .shots { order: 0; }
+  .work { gap: 72px; }
+  .sec-label { margin-bottom: -40px; }
+  .hero-in { padding-block: 64px 48px; }
+  .mosaic { grid-template-columns: 1fr 1fr; }
+  .mosaic img:nth-child(3) { display: none; }
+  .hero::after { background: linear-gradient(0deg, var(--bg) 10%, color-mix(in srgb, var(--bg) 78%, transparent) 100%); }
+  .bar nav a.opt { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .thumbs button { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="wrap">
+    <a class="name" href="#top">Marc de Pedro</a>
+    <nav aria-label="Sections">
+      <a href="#work" class="opt">Work</a>
+      <a href="#contact" class="opt">Contact</a>
+      <a href="Marc_de_Pedro_CV.pdf" class="cv">CV</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="mosaic" aria-hidden="true">
+    <img src="media/img/deflector-1.jpg" alt="">
+    <img src="media/img/reseed-1.jpg" alt="">
+    <img src="media/img/singular-1.jpg" alt="">
+  </div>
+  <div class="wrap">
+    <div class="hero-in">
+      <p class="eyebrow">Unity Developer · Barcelona</p>
+      <h1>Marc de Pedro</h1>
+      <p class="lede">Games, VR and multiplayer in Unity.</p>
+      <div class="actions">
+        <a class="btn primary" href="#work">See my work</a>
+        <a class="btn" href="Marc_de_Pedro_CV.pdf">CV</a>
+        <a class="btn" href="https://github.com/marcdp1997">GitHub ↗</a>
+        <a class="btn" href="https://www.linkedin.com/in/marcdp1997">LinkedIn ↗</a>
+      </div>
+      <ul class="stack" aria-label="Main tools">
+        <li>C#</li><li>Unity</li><li>FishNet</li><li>OpenXR</li><li>Steamworks</li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <figure class="reel" data-src="media/reel.mp4" aria-label="Showreel"></figure>
+
+    <div class="work" id="work">
+      <p class="sec-label">Selected work</p>
+
+      <article class="feature" id="deflector">
+        <div class="shots" data-video="media/deflector.mp4">
+          <div class="stage"><img src="media/img/deflector-1.jpg" alt="Deflector gameplay screenshot"></div>
+          <div class="thumbs">
+            <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/deflector-1.jpg" alt=""></button>
+            <button type="button" aria-pressed="false" aria-label="Screenshot 2"><img src="media/img/deflector-2.jpg" alt=""></button>
+            <button type="button" aria-pressed="false" aria-label="Screenshot 3"><img src="media/img/deflector-3.jpg" alt=""></button>
+            <button type="button" aria-pressed="false" aria-label="Screenshot 4"><img src="media/img/deflector-4.jpg" alt=""></button>
+          </div>
+        </div>
+        <div class="info">
+          <h2>Deflector</h2>
+          <dl class="stats">
+            <div><dt>copies sold</dt><dd>15k+</dd></div>
+            <div><dt>positive Steam reviews</dt><dd>87%</dd></div>
+          </dl>
+          <dl class="specs">
+            <div><dt>Studio</dt><dd>Arrowfist Games</dd></div>
+            <div><dt>Role</dt><dd>Co-founder &amp; Unity Developer</dd></div>
+            <div><dt>Team</dt><dd>7 people</dd></div>
+            <div><dt>Development</dt><dd>3 years</dd></div>
+            <div><dt>Platforms</dt><dd>PC, consoles</dd></div>
+          </dl>
+          <div class="links"><a class="btn" href="https://store.steampowered.com/app/1736550/Deflector/">Steam page ↗</a></div>
+        </div>
+      </article>
+
+      <article class="feature flip" id="reseed">
+        <div class="shots" data-video="media/reseed.mp4">
+          <div class="stage"><img src="media/img/reseed-1.jpg" alt="RESEED gameplay screenshot"></div>
+          <div class="thumbs">
+            <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/reseed-1.jpg" alt=""></button>
+            <button type="button" aria-pressed="false" aria-label="Screenshot 2"><img src="media/img/reseed-2.jpg" alt=""></button>
+            <button type="button" aria-pressed="false" aria-label="Screenshot 3"><img src="media/img/reseed-3.jpg" alt=""></button>
+            <button type="button" aria-pressed="false" aria-label="Screenshot 4"><img src="media/img/reseed-4.jpg" alt=""></button>
+          </div>
+        </div>
+        <div class="info">
+          <h2>RESEED</h2>
+          <dl class="specs">
+            <div><dt>Studio</dt><dd>Headless Division</dd></div>
+            <div><dt>Role</dt><dd>Co-founder &amp; Unity Developer</dd></div>
+            <div><dt>Team</dt><dd>3 people</dd></div>
+            <div><dt>Development</dt><dd>3 months</dd></div>
+            <div><dt>Platform</dt><dd>PC (Steam)</dd></div>
+          </dl>
+          <div class="links"><a class="btn" href="https://store.steampowered.com/app/3954440/RESEED/">Steam page ↗</a></div>
+        </div>
+      </article>
+
+      <article class="feature" id="singular-ones">
+        <div class="shots" data-video="media/singular-ones.mp4">
+          <div class="stage"><img src="media/img/singular-1.jpg" alt="The Singular Ones screenshot"></div>
+          <div class="thumbs">
+            <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/singular-1.jpg" alt=""></button>
+            <button type="button" aria-pressed="false" aria-label="Screenshot 2"><img src="media/img/singular-2.jpg" alt=""></button>
+            <button type="button" aria-pressed="false" aria-label="Screenshot 3"><img src="media/img/singular-3.jpg" alt=""></button>
+            <button type="button" aria-pressed="false" aria-label="Screenshot 4"><img src="media/img/singular-4.jpg" alt=""></button>
+          </div>
+        </div>
+        <div class="info">
+          <span class="badge">Coming Q1 2027</span>
+          <h2>The Singular Ones</h2>
+          <dl class="specs">
+            <div><dt>Studio</dt><dd>Bearded Pixels</dd></div>
+            <div><dt>Role</dt><dd>Unity Developer</dd></div>
+            <div><dt>Team</dt><dd>3 people</dd></div>
+            <div><dt>Development</dt><dd>In progress</dd></div>
+            <div><dt>Platform</dt><dd>PC (Steam)</dd></div>
+          </dl>
+          <div class="links"><a class="btn" href="https://store.steampowered.com/app/4754310/The_Singular_Ones/">Wishlist on Steam ↗</a></div>
+        </div>
+      </article>
+
+      <article class="feature flip" id="xroam">
+        <div class="shots" data-video="media/xroam.mp4">
+          <div class="stage contain"><img src="media/img/xroam-1.webp" alt="XRoam, the all-in-one LBVR solution"></div>
+        </div>
+        <div class="info">
+          <h2>XRoam</h2>
+          <dl class="specs">
+            <div><dt>Company</dt><dd>Univrse</dd></div>
+            <div><dt>Role</dt><dd>Mid Unity Developer</dd></div>
+            <div><dt>Team</dt><dd>2 programmers</dd></div>
+            <div><dt>Period</dt><dd>2024–2025</dd></div>
+            <div><dt>Platform</dt><dd>Standalone VR</dd></div>
+          </dl>
+          <div class="links"><a class="btn" href="https://solutions.xroam.com/">XRoam ↗</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <section class="more">
+    <div class="wrap">
+      <h3 class="sec">Also</h3>
+      <div class="cards">
+        <div class="card">
+          <h4>Driving simulator</h4>
+          <dl class="specs">
+            <div><dt>Client</dt><dd><a href="https://cookiebox.es/">Cookie Box ↗</a></dd></div>
+            <div><dt>Studio</dt><dd>Bearded Pixels</dd></div>
+            <div><dt>Role</dt><dd>Unity Developer</dd></div>
+          </dl>
+        </div>
+        <div class="card">
+          <h4>“From Zero to Hero”</h4>
+          <dl class="specs">
+            <div><dt>Where</dt><dd><a href="https://ajuntament.barcelona.cat/biblioteques/ca/bibcanfabra/activities/99400785077">Biblioteca Can Fabra ↗</a></dd></div>
+            <div><dt>Role</dt><dd>Unity Instructor</dd></div>
+            <div><dt>Period</dt><dd>Oct–Nov 2026</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <h2>Let's work together</h2>
+    <p>Open to Unity roles in games, VR and apps.</p>
+    <div class="actions">
+      <a class="btn primary" href="Marc_de_Pedro_CV.pdf">Download CV</a>
+      <a class="btn" href="https://www.linkedin.com/in/marcdp1997">LinkedIn ↗</a>
+      <a class="btn" href="https://github.com/marcdp1997">GitHub ↗</a>
+    </div>
+    <span class="email">marcdp2012@gmail.com</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Plays a clip in place once its file exists; until then the screenshots stay.
+  function tryVideo(src, onReady) {
+    var v = document.createElement('video');
+    v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'metadata';
+    if (reduce) v.controls = true; else v.autoplay = true;
+    v.addEventListener('loadeddata', function () { onReady(v); if (!reduce) v.play().catch(function () {}); }, { once: true });
+    v.src = src;
+  }
+
+  var reel = document.querySelector('.reel');
+  if (reel) tryVideo(reel.dataset.src, function (v) { v.controls = true; reel.appendChild(v); reel.classList.add('has-video'); });
+
+  document.querySelectorAll('.shots').forEach(function (shots) {
+    var stage = shots.querySelector('.stage');
+    var main = stage.querySelector('img');
+    var buttons = shots.querySelectorAll('.thumbs button');
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var vid = stage.querySelector('video');
+        if (vid) { vid.pause(); vid.hidden = true; }
+        main.src = b.querySelector('img').src;
+        buttons.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+      });
+    });
+    if (shots.dataset.video) tryVideo(shots.dataset.video, function (v) { stage.appendChild(v); });
+  });
+})();
+</script>
+</body>
+</html>

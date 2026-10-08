@@ -1,0 +1,12 @@
+# Windows / macOS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Raw recordings and project files (only upload the compressed clips)
+*.mov
+*.mkv
+*.avi
+*-raw.*
+*.psd
+*.kra
