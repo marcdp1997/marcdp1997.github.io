@@ -72,15 +72,19 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .highlights { display: grid; gap: 20px; margin-bottom: 72px; }
 .hl-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .hl { display: grid; grid-template-rows: auto 1fr; overflow: hidden; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); text-decoration: none; transition: border-color .15s, transform .15s; }
-.hl:hover { border-color: var(--type); transform: translateY(-3px); }
+.hl:hover { border-color: var(--muted); transform: translateY(-3px); }
 .hl img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+/* XRoam is a toolset, not a game: just its logo on black, same 16:9 slot as the screenshots */
+.hl-logo { display: grid; place-items: center; aspect-ratio: 16 / 9; background: #000; }
+.hl-logo img { width: 62%; aspect-ratio: auto; object-fit: contain; }
 .hl-body { display: grid; gap: 10px; align-content: start; padding: 18px 20px 20px; }
-.hl .type { justify-self: start; }
-.hl h3 { margin: 0; font: 700 1.6rem/1.05 var(--display); }
+.hl h3 { margin: 0; display: flex; align-items: center; gap: 10px; font: 700 1.6rem/1.05 var(--display); }
+.hl h3::before { content: ""; flex: none; width: 12px; height: 12px; border-radius: 50%; border: 3px solid var(--type); }
+.hl-co { margin: -4px 0 4px; font-weight: 600; color: var(--muted); }
 .hl-stat { margin: 0; display: grid; gap: 2px; }
-.hl-stat b { font: 600 1.7rem/1.1 var(--display); color: var(--accent); }
+.hl-stat b { font: 600 1.7rem/1.1 var(--display); color: var(--type); }
 .hl-stat span { font-size: .85rem; color: var(--muted); }
-.hl-more { margin-top: 4px; font: 500 .82rem/1 var(--mono); color: var(--type); }
+.hl-more { margin-top: 4px; font: 500 .82rem/1 var(--mono); color: var(--muted); }
 .sec-label { margin: 0; font: 600 1.5rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .exp-head { display: grid; gap: 20px; margin-bottom: 40px; }
 .filters { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -97,10 +101,11 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 [data-type="teaching"], [data-filter="teaching"] { --type: #c792ea; }
 .entry { position: relative; display: grid; gap: 12px; }
 .entry[hidden] { display: none; }
-.entry::before { content: ""; position: absolute; left: -36px; top: 1px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--type); }
+.entry::before { content: ""; position: absolute; z-index: 1; left: -36px; top: 1px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--type); }
 .when { margin: 0; font: 500 .85rem/18px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
-.when .now { color: var(--accent); }
-.when .at { color: var(--muted); }
+.when .now { color: inherit; }
+.when .at { display: block; margin-top: 6px; color: var(--muted); }
+.when .at b { color: var(--ink); font-weight: 500; }
 .entry { scroll-margin-top: 80px; }
 .type { font: 500 .72rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 6px 9px; border-radius: 4px; color: var(--type); border: 1px solid var(--type); background: color-mix(in srgb, var(--type) 10%, transparent); }
 
@@ -130,7 +135,7 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .lead { margin: 0; color: var(--muted); max-width: 62ch; }
 .stats { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 0; padding: 0; }
 .stats div { display: flex; flex-direction: column-reverse; }
-.stats dd { margin: 0; font: 600 1.7rem/1.1 var(--display); color: var(--accent); font-variant-numeric: tabular-nums; }
+.stats dd { margin: 0; font: 600 1.7rem/1.1 var(--display); color: var(--type); font-variant-numeric: tabular-nums; }
 .stats dt { font-size: .8rem; color: var(--muted); }
 .did { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: .95rem; }
 .did li { position: relative; padding-left: 22px; max-width: 70ch; }
@@ -139,7 +144,7 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .facts div { display: grid; align-content: start; gap: 3px; }
 .facts dt { font: 500 .68rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .facts dd { margin: 0; font-size: .92rem; line-height: 1.35; }
-.facts a { color: var(--accent); text-decoration: none; }
+.facts a { color: var(--type); text-decoration: none; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; }
 .badge { font: 500 .72rem/1 var(--mono); padding: 6px 9px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
 
@@ -148,15 +153,17 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .edu-card { display: grid; gap: 8px; padding: 24px 28px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); }
 .edu-card h3 { margin: 0; font: 700 clamp(1.4rem, 3vw, 1.8rem)/1.1 var(--display); }
 
-/* XRoam has no screenshots of its own: the experiences built with it take the media slot */
+/* XRoam has no screenshots of its own: Univrse projects built with it take the media slot, captioned as theirs */
+.tiles-wrap { display: grid; gap: 10px; min-width: 0; }
+.tiles-cap { margin: 0; font: 500 .72rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .tiles { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .tiles a { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); text-decoration: none; transition: border-color .15s, transform .15s; }
 .tiles a::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgb(0 0 0 / .8) 0%, rgb(0 0 0 / .1) 60%); }
 .tiles img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
-.tiles a:hover { border-color: var(--accent); transform: translateY(-2px); }
+.tiles a:hover { border-color: var(--type); transform: translateY(-2px); }
 .tiles a:hover img { transform: scale(1.04); }
 .tiles .t { position: absolute; left: 12px; right: 12px; bottom: 10px; z-index: 1; font: 600 1rem/1.2 var(--display); color: #fff; }
-.tiles .all a { display: grid; place-content: center; text-align: center; color: var(--accent); }
+.tiles .all a { display: grid; place-content: center; text-align: center; color: var(--type); }
 .tiles .all a::after { content: none; }
 .tiles .all .t { position: static; color: inherit; }
 
@@ -229,27 +236,30 @@ footer p { margin: 0; color: var(--muted); }
           <a class="hl" href="#deflector" data-type="games">
             <img src="media/img/deflector-2.jpg" alt="" loading="lazy">
             <div class="hl-body">
-              <span class="type">Game Development</span>
+              
               <h3>Deflector</h3>
+              <p class="hl-co">Arrowfist Games</p>
               <p class="hl-stat"><b>~20k copies</b><span>87% positive on Steam · Steam, Epic &amp; consoles</span></p>
               <span class="hl-more">See more ↓</span>
             </div>
           </a>
           <a class="hl" href="#xroam" data-type="vr">
-            <img src="media/img/xroam-tomorrowland.jpg" alt="" loading="lazy">
+            <div class="hl-logo"><img src="media/img/xroam-logo.png" alt="XRoam"></div>
             <div class="hl-body">
-              <span class="type">VR</span>
-              <h3>XRoam</h3>
-              <p class="hl-stat"><b>4M+ visitors</b><span>130+ installations · 50+ users per session</span></p>
+              
+              <h3>XRoam SDK</h3>
+              <p class="hl-co">UNIVRSE</p>
+              <p class="hl-stat"><b>Location-based VR toolset</b><span>50+ users per session · 130+ installations · 4M+ visitors on experiences built with it</span></p>
               <span class="hl-more">See more ↓</span>
             </div>
           </a>
           <a class="hl" href="#singular-ones" data-type="games">
             <img src="media/img/singular-hero.jpg" alt="" loading="lazy">
             <div class="hl-body">
-              <span class="type">Game Development</span>
+              
               <h3>The Singular Ones</h3>
-              <p class="hl-stat"><b>Q1 2027</b><span>Coming to Steam · sole Unity developer</span></p>
+              <p class="hl-co">Bearded Pixels Games</p>
+              <p class="hl-stat"><b>Q1 2027</b><span>Coming to Steam</span></p>
               <span class="hl-more">See more ↓</span>
             </div>
           </a>
@@ -267,12 +277,11 @@ footer p { margin: 0; color: var(--muted); }
       </div>
       <ol class="timeline">
       <li class="entry" id="singular-ones" data-type="games">
-        <p class="when">Oct 2025 – <span class="now">Present</span> <span class="at">· Bearded Pixels Games</span></p>
+        <p class="when">Oct 2025 – <span class="now">Present</span> <span class="at"><b>Bearded Pixels Games</b> · Unity Developer</span></p>
         <article class="card">
           <header class="card-head">
-            <div class="tags"><span class="type">Game Development</span><span class="badge">Coming Q1 2027</span></div>
+            <div class="tags"><span class="badge">Coming Q1 2027</span></div>
             <h3>The Singular Ones</h3>
-            <p class="role">Unity Developer · <b>Bearded Pixels Games</b></p>
           </header>
           <div class="body media">
               <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/4754310/788719265/bf53c22b9369df2d5a8b7f0c2a550607ce240f05/1779184134/hls_264_master.m3u8?t=1780572088">
@@ -302,12 +311,11 @@ footer p { margin: 0; color: var(--muted); }
         </article>
       </li>
       <li class="entry" id="reseed" data-type="games">
-        <p class="when">Jun 2025 – <span class="now">Present</span> <span class="at">· Headless Division</span></p>
+        <p class="when">Jun 2025 – <span class="now">Present</span> <span class="at"><b>Headless Division</b> · Co-founder &amp; Unity Developer</span></p>
         <article class="card">
           <header class="card-head">
-            <div class="tags"><span class="type">Game Development</span><span class="badge">Released Apr 2026</span></div>
+            <div class="tags"><span class="badge">Released Apr 2026</span></div>
             <h3>RESEED</h3>
-            <p class="role">Co-founder &amp; Unity Developer · <b>Headless Division</b></p>
           </header>
           <div class="body media">
               <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/3954440/1740601381/3aed9861b669e9296e61c71306db50ca59ad4b82/1771756458/hls_264_master.m3u8?t=1771756754">
@@ -338,12 +346,10 @@ footer p { margin: 0; color: var(--muted); }
         </article>
       </li>
       <li class="entry" id="zero-to-hero" data-type="teaching">
-        <p class="when">Oct 2026 – Nov 2026 <span class="at">· Biblioteques de Barcelona</span></p>
+        <p class="when">Oct 2026 – Nov 2026 <span class="at"><b>Biblioteques de Barcelona</b> · Unity Instructor</span></p>
         <article class="card">
           <header class="card-head">
-            <div class="tags"><span class="type">Teaching</span></div>
             <h3>“From Zero to Hero”</h3>
-            <p class="role">Unity Instructor · <b>Biblioteques de Barcelona</b></p>
           </header>
           <div class="body">
               <div class="info">
@@ -356,12 +362,10 @@ footer p { margin: 0; color: var(--muted); }
         </article>
       </li>
       <li class="entry" id="driving-sim" data-type="serious">
-        <p class="when">Feb 2026 – Jun 2026 <span class="at">· Cookie Box Group</span></p>
+        <p class="when">Feb 2026 – Jun 2026 <span class="at"><b>Cookie Box Group</b> · Unity Developer</span></p>
         <article class="card">
           <header class="card-head">
-            <div class="tags"><span class="type">Serious Games</span></div>
             <h3>3D Driving Simulator</h3>
-            <p class="role">Unity Developer · <b>Cookie Box Group</b></p>
           </header>
           <div class="body">
               <div class="info">
@@ -376,15 +380,15 @@ footer p { margin: 0; color: var(--muted); }
         </article>
       </li>
       <li class="entry" id="xroam" data-type="vr">
-        <p class="when">Jan 2024 – May 2025 <span class="at">· UNIVRSE</span></p>
+        <p class="when">Jan 2024 – May 2025 <span class="at"><b>UNIVRSE</b> · Mid Unity Developer</span></p>
         <article class="card">
           <header class="card-head">
-            <div class="tags"><span class="type">VR</span></div>
-            <h3>XRoam</h3>
-            <p class="role">Mid Unity Developer · <b>UNIVRSE</b></p>
+            <h3>XRoam SDK</h3>
           </header>
           <div class="body media">
-              <ul class="tiles" aria-label="Experiences built with XRoam">
+              <div class="tiles-wrap">
+              <p class="tiles-cap" id="xroam-cap">Univrse projects built with XRoam</p>
+              <ul class="tiles" aria-labelledby="xroam-cap">
                 <li><a href="https://www.univr.se/project/tomorrowland"><img src="media/img/xroam-tomorrowland.jpg" alt="" loading="lazy"><span class="t">Tomorrowland</span></a></li>
                 <li><a href="https://www.univr.se/project/titanic"><img src="media/img/xroam-titanic.jpg" alt="" loading="lazy"><span class="t">Titanic</span></a></li>
                 <li><a href="https://www.univr.se/project/spellbound"><img src="media/img/xroam-spellbound.jpg" alt="" loading="lazy"><span class="t">Spellbound</span></a></li>
@@ -392,12 +396,13 @@ footer p { margin: 0; color: var(--muted); }
                 <li><a href="https://www.univr.se/project/finding-vincent"><img src="media/img/xroam-finding-vincent.jpg" alt="" loading="lazy"><span class="t">Finding Vincent</span></a></li>
                 <li class="all"><a href="https://www.univr.se/projects"><span class="t">All Univrse projects ↗</span></a></li>
               </ul>
+              </div>
               <div class="info">
-                <p class="lead">Software ecosystem for creating, deploying and running multi-user location-based VR experiences on Pico headsets.</p>
+                <p class="lead">I was part of the team that developed the XRoam SDK, a user-friendly ecosystem to create, deploy and run location-based VR experiences on Pico headsets.</p>
                 <dl class="stats">
-                  <div><dt>visitors</dt><dd>4M+</dd></div>
-                  <div><dt>installations</dt><dd>130+</dd></div>
                   <div><dt>users per session</dt><dd>50+</dd></div>
+                  <div><dt>installations</dt><dd>130+</dd></div>
+                  <div><dt>visitors</dt><dd>4M+</dd></div>
                 </dl>
                 <ul class="did">
                   <li>Reworked most of the FishNet core networking to keep shared sessions of 50+ headsets stable and reliable.</li>
@@ -411,12 +416,11 @@ footer p { margin: 0; color: var(--muted); }
         </article>
       </li>
       <li class="entry" id="deflector" data-type="games">
-        <p class="when">Feb 2020 – Dec 2023 <span class="at">· Arrowfist Games</span></p>
+        <p class="when">Feb 2020 – Dec 2023 <span class="at"><b>Arrowfist Games</b> · Co-founder &amp; Unity Developer</span></p>
         <article class="card">
           <header class="card-head">
-            <div class="tags"><span class="type">Game Development</span><span class="badge">Released Mar 2023</span></div>
+            <div class="tags"><span class="badge">Released Mar 2023</span></div>
             <h3>Deflector</h3>
-            <p class="role">Co-founder &amp; Unity Developer · <b>Arrowfist Games</b></p>
           </header>
           <div class="body media">
               <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/1736550/551523/a86c25e3b011ff77da19d4791953a373c15e7436/1751025667/hls_264_master.m3u8?t=1679669634">
@@ -533,6 +537,7 @@ footer p { margin: 0; color: var(--muted); }
 
   // Type filters: hide timeline entries of other types.
   var filters = document.querySelectorAll('.filters button');
+
   filters.forEach(function (f) {
     f.addEventListener('click', function () {
       var type = f.dataset.filter;
