@@ -43,9 +43,9 @@ img { display: block; max-width: 100%; }
 /* top bar */
 .bar { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 20; transition: transform .25s, visibility .25s; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .js .bar.is-hidden { transform: translateY(-100%); visibility: hidden; }
-section, footer { scroll-margin-top: 64px; }
+section, footer, #projects, #experience { scroll-margin-top: 64px; }
 .bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
-.bar .name { font: 600 1rem/1 var(--display); letter-spacing: .03em; text-decoration: none; }
+.bar .name { font: 600 1rem/1 var(--display); letter-spacing: .03em; text-decoration: none; white-space: nowrap; }
 .bar nav { display: flex; gap: 18px; align-items: center; }
 .bar nav a { font: 500 .82rem/1 var(--mono); color: var(--muted); text-decoration: none; }
 .bar nav a:hover { color: var(--accent); }
@@ -64,23 +64,26 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .lede b { color: var(--ink); font-weight: 600; }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 16px; border-radius: 6px; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 80%, transparent); color: var(--ink); font: 500 .9rem/1 var(--body); text-decoration: none; cursor: pointer; }
-.btn:hover { border-color: var(--accent); }
+.btn:hover { border-color: var(--ink); }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
 /* experience timeline: every job is the same card: a media column and a text column side by side */
 .exp { padding-block: 72px; }
+/* Projects: the overview grid; each card jumps to its Experience entry below */
 .highlights { display: grid; gap: 20px; margin-bottom: 72px; }
+.exp-head { display: grid; gap: 20px; margin-bottom: 40px; }
 .hl-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .hl { display: grid; grid-template-rows: auto 1fr; overflow: hidden; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); text-decoration: none; transition: border-color .15s, transform .15s; }
-.hl:hover { border-color: var(--muted); transform: translateY(-3px); }
+/* project cards: neutral, no filter colours (outline, numbers and key tags all in white) */
+.hl { --type: var(--ink); border-color: color-mix(in srgb, var(--ink) 30%, transparent); }
+.hl:hover { border-color: var(--ink); transform: translateY(-3px); }
 .hl img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
 /* XRoam is a toolset, not a game: just its logo on black, same 16:9 slot as the screenshots */
 .hl-logo { display: grid; place-items: center; aspect-ratio: 16 / 9; background: #000; }
 .hl-logo img { width: 62%; aspect-ratio: auto; object-fit: contain; }
 .hl-body { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 20px; }
 .hl-body .chips { margin-top: auto; }
-.hl h3 { margin: 0; display: flex; align-items: center; gap: 10px; font: 700 1.6rem/1.05 var(--display); }
-.hl h3::before { content: ""; flex: none; width: 12px; height: 12px; border-radius: 50%; border: 3px solid var(--type); }
+.hl h3 { margin: 0; font: 700 1.6rem/1.05 var(--display); }
 .hl-co { margin: -4px 0 0; font-weight: 600; color: var(--muted); }
 .hl-desc { margin: 0; font-size: .9rem; line-height: 1.45; color: var(--muted); }
 /* genre line + chips: what it is, area and mode first (in the type colour), then platform and key tech */
@@ -90,7 +93,7 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .chips li { font: 500 .76rem/1 var(--mono); padding: 4px 7px; border-radius: 4px; background: color-mix(in srgb, var(--ink) 7%, transparent); color: var(--muted); }
 .chips .key { color: var(--type); background: color-mix(in srgb, var(--type) 12%, transparent); }
 .sec-label { margin: 0; font: 600 1.5rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.exp-head { display: grid; gap: 20px; margin-bottom: 40px; }
+/* filter row under the Experience heading; filters the timeline */
 .filters { display: flex; flex-wrap: wrap; gap: 6px; }
 .filters button { padding: 8px 12px; border-radius: 5px; border: 1px solid color-mix(in srgb, var(--type) 45%, transparent); background: none; color: var(--type); font: 500 .85rem/1 var(--body); cursor: pointer; }
 .filters button:hover { border-color: var(--type); background: color-mix(in srgb, var(--type) 10%, transparent); }
@@ -102,7 +105,6 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 [data-type="games"], [data-filter="games"] { --type: var(--accent); }
 [data-type="vr"], [data-filter="vr"] { --type: #5aa9ff; }
 [data-type="serious"], [data-filter="serious"] { --type: #4fd1a5; }
-[data-type="teaching"], [data-filter="teaching"] { --type: #c792ea; }
 .entry { position: relative; display: grid; gap: 20px; }
 .entry[hidden] { display: none; }
 .entry::before { content: ""; position: absolute; z-index: 1; left: -36px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--type); }
@@ -112,12 +114,14 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 /* company header: dates, company and role; its projects follow as smaller cards */
 .co { display: grid; gap: 6px; }
 .co h3 { margin: 4px 0 0; font: 700 clamp(2rem, 5vw, 3rem)/1 var(--display); text-wrap: balance; }
-.co-role { margin: 0; font: 600 1.15rem/1.3 var(--body); color: var(--type); }
+.co-role { margin: 0; font: 600 1.15rem/1.3 var(--body); color: var(--ink); }
 .co-type { font-weight: 500; color: var(--muted); }
 .entry { scroll-margin-top: 80px; }
 .type { font: 500 .72rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 6px 9px; border-radius: 4px; color: var(--type); border: 1px solid var(--type); background: color-mix(in srgb, var(--type) 10%, transparent); }
 
 .card { display: grid; gap: 16px; padding: 18px 20px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); scroll-margin-top: 80px; }
+/* outlined in the filter colour, like the project cards */
+.card { border-color: color-mix(in srgb, var(--type) 45%, transparent); }
 /* several projects at one company: one timeline dot, cards stacked; a card's own data-type overrides the entry's for colour and filtering */
 .card[hidden] { display: none; }
 .card-head { display: grid; gap: 6px; }
@@ -134,19 +138,17 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .shots { display: flex; flex-direction: column; justify-content: center; gap: 8px; min-width: 0; }
 .stage { flex: none; position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #000; }
 .stage img, .stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.stage img { transition: opacity .25s; }
-.stage img.fade { opacity: 0; }
 .stage video { z-index: 1; }
 .play { position: absolute; left: 10px; bottom: 10px; z-index: 2; display: inline-flex; align-items: center; gap: 6px; padding: 7px 11px; border: 1px solid rgb(255 255 255 / .18); border-radius: 6px; background: color-mix(in srgb, var(--surface) 75%, transparent); backdrop-filter: blur(8px); color: var(--ink); font: 600 .85rem/1 var(--body); cursor: pointer; box-shadow: 0 4px 18px rgb(0 0 0 / .45); }
 .play svg { width: 12px; height: 12px; fill: currentColor; }
-.play:hover { border-color: var(--accent); }
+.play:hover { border-color: var(--ink); }
 .stage.playing .play { display: none; }
 /* Steam button closes the text column */
 .info > .store { align-self: flex-start; }
 .thumbs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
 .thumbs button { padding: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: none; cursor: pointer; aspect-ratio: 16 / 9; opacity: .55; transition: opacity .15s, border-color .15s; }
 .thumbs button img { width: 100%; height: 100%; object-fit: cover; }
-.thumbs button:hover, .thumbs button[aria-pressed="true"] { opacity: 1; border-color: var(--accent); }
+.thumbs button:hover, .thumbs button[aria-pressed="true"] { opacity: 1; border-color: var(--type); }
 
 .info { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 /* when the images are taller, the text sits centred next to them */
@@ -181,13 +183,13 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .meta { margin: 0; font-size: .95rem; color: var(--muted); }
 .badge { font: 500 .72rem/1 var(--mono); padding: 6px 9px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
 
-.edu { padding-bottom: 72px; }
+/* Teaching and Education close the Experience section, after the timeline */
+.edu { margin-top: 72px; }
 .edu .sec-label { margin-bottom: 24px; }
 .edu-card { display: grid; gap: 8px; padding: 24px 28px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); }
 .edu-card h3 { margin: 0; font: 700 clamp(1.4rem, 3vw, 1.8rem)/1.1 var(--display); }
-.edu-card .lead { max-width: 75ch; }
-.edu-link { justify-self: start; font-size: .92rem; color: var(--type); text-decoration: none; }
-.edu-link:hover { text-decoration: underline; }
+.edu-card .lead { max-width: none; }
+.edu-link { justify-self: start; }
 
 /* XRoam has no screenshots of its own: Univrse projects built with it take the media slot, captioned as theirs */
 .tiles-wrap { display: flex; flex-direction: column; justify-content: center; gap: 10px; min-width: 0; }
@@ -231,6 +233,8 @@ footer p { margin: 0; color: var(--muted); }
   .hl-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 480px) {
+  .bar nav { gap: 12px; }
+  .bar nav a { font-size: .76rem; }
   .card { padding: 18px; }
   .timeline { padding-left: 28px; }
   .entry::before { left: -28px; }
@@ -244,6 +248,7 @@ footer p { margin: 0; color: var(--muted); }
   <div class="wrap">
     <a class="name" href="#top">Marc de Pedro</a>
     <nav aria-label="Sections">
+      <a href="#projects">Projects</a>
       <a href="#experience">Experience</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -272,29 +277,39 @@ footer p { margin: 0; color: var(--muted); }
 </header>
 
 <main>
-  <section class="exp" id="experience">
+  <section class="exp">
     <div class="wrap">
-      <div class="highlights">
-        <h2 class="sec-label">Highlights</h2>
+      <div class="highlights" id="projects">
+        <h2 class="sec-label">Projects</h2>
         <div class="hl-grid">
-          <a class="hl" href="#deflector" data-type="games">
-            <img src="media/img/deflector-capsule.jpg" alt="" loading="lazy">
+          <a class="hl" href="#singular-ones">
+            <img src="media/img/singular-capsule.jpg" alt="" loading="lazy">
             <div class="hl-body">
-              <h3>Deflector</h3>
-              <p class="hl-co">Arrowfist Games</p>
-              <p class="hl-desc">Top-down action roguelite incubated at GameBCN. On Steam, Epic and consoles.</p>
-              <div class="stats-block">
-                <p class="stats-cap">On Steam</p>
-                <dl class="stats">
-                  <div><dt>copies sold</dt><dd>~20k</dd></div>
-                  <div><dt>reviews</dt><dd>280+</dd></div>
-                  <div><dt>positive</dt><dd>87%</dd></div>
-                </dl>
-              </div>
-              <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>Roguelite</li><li>Single-player</li><li>Gameplay</li><li>Enemy AI</li></ul>
+              <h3>The Singular Ones</h3>
+              <p class="hl-co">Bearded Pixels Games</p>
+              <p class="hl-desc">Cozy logic-mystery game mixing deduction puzzles with visual-novel scenes.</p>
+              <ul class="chips"><li class="key">Logic Puzzle</li><li class="key">2D</li><li>Gameplay Programming</li><li>Editor Tools</li><li>Steamworks</li></ul>
             </div>
           </a>
-          <a class="hl" href="#xroam" data-type="vr">
+          <a class="hl" href="#reseed">
+            <img src="media/img/reseed-capsule.jpg" alt="" loading="lazy">
+            <div class="hl-body">
+              <h3>RESEED</h3>
+              <p class="hl-co">Headless Division</p>
+              <p class="hl-desc">Puzzle platformer: plan a route through a safe level, then watch a seed replay it through traps.</p>
+              <ul class="chips"><li class="key">Puzzle Platformer</li><li class="key">2D</li><li>Gameplay Programming</li><li>Steamworks</li></ul>
+            </div>
+          </a>
+          <a class="hl" href="#egarsat">
+            <img src="media/img/egarsat-capsule.jpg" alt="" loading="lazy">
+            <div class="hl-body">
+              <h3>Egarsat</h3>
+              <p class="hl-co">Cookie Box Group</p>
+              <p class="hl-desc">A serious game for Egarsat that teaches workplace safety with minigames in real-life scenarios.</p>
+              <ul class="chips"><li class="key">Serious Game</li><li class="key">3D</li><li>WebGL</li><li>Optimization</li></ul>
+            </div>
+          </a>
+          <a class="hl" href="#xroam">
             <div class="hl-logo"><img src="media/img/xroam-logo.png" alt="XRoam"></div>
             <div class="hl-body">
               <h3>XRoam SDK</h3>
@@ -308,25 +323,34 @@ footer p { margin: 0; color: var(--muted); }
                   <div><dt>visitors</dt><dd>4M+</dd></div>
                 </dl>
               </div>
-              <ul class="chips"><li>Unity</li><li>C#</li><li>VR</li><li>Multiplayer</li><li>Tooling</li><li>XR Stack</li><li>Pico</li></ul>
+              <ul class="chips"><li class="key">VR</li><li class="key">Multiplayer</li><li>Editor Tools</li><li>UI Toolkit</li><li>XR Interaction Toolkit</li><li>Pico SDK</li></ul>
             </div>
           </a>
-          <a class="hl" href="#singular-ones" data-type="games">
-            <img src="media/img/singular-capsule.jpg" alt="" loading="lazy">
+          <a class="hl" href="#deflector">
+            <img src="media/img/deflector-capsule.jpg" alt="" loading="lazy">
             <div class="hl-body">
-              <h3>The Singular Ones</h3>
-              <p class="hl-co">Bearded Pixels Games</p>
-              <p class="hl-desc">Cozy logic-mystery game mixing deduction puzzles with visual-novel scenes.</p>
-              <ul class="chips"><li>Unity</li><li>C#</li><li>2D</li><li>Logic Puzzle</li><li>Single-player</li><li>Gameplay</li><li>Tooling</li></ul>
+              <h3>Deflector</h3>
+              <p class="hl-co">Arrowfist Games</p>
+              <p class="hl-desc">Top-down action roguelite incubated at GameBCN. On Steam, Epic and consoles.</p>
+              <div class="stats-block">
+                <p class="stats-cap">On Steam</p>
+                <dl class="stats">
+                  <div><dt>copies sold</dt><dd>~20k</dd></div>
+                  <div><dt>reviews</dt><dd>280+</dd></div>
+                  <div><dt>positive</dt><dd>87%</dd></div>
+                </dl>
+              </div>
+              <ul class="chips"><li class="key">Roguelite</li><li class="key">3D</li><li>Gameplay Programming</li><li>Enemy AI</li><li>Steamworks</li><li>Epic Online Services</li></ul>
             </div>
           </a>
         </div>
       </div>
+      <div id="experience">
       <div class="exp-head">
         <h2 class="sec-label">Experience</h2>
         <div class="filters" role="group" aria-label="Filter by type">
           <button type="button" aria-pressed="true" data-filter="all">All</button>
-          <button type="button" aria-pressed="false" data-filter="games">Game Development</button>
+          <button type="button" aria-pressed="false" data-filter="games">Indie Games</button>
           <button type="button" aria-pressed="false" data-filter="vr">VR</button>
           <button type="button" aria-pressed="false" data-filter="serious">Serious Games</button>
         </div>
@@ -344,7 +368,6 @@ footer p { margin: 0; color: var(--muted); }
                 <header class="card-head">
                   <h4>The Singular Ones</h4>
                   <p class="meta">Releasing Q1 2027 · 4-person team · Steam</p>
-                  <ul class="chips"><li>Unity</li><li>C#</li><li>2D</li><li>Logic Puzzle</li><li>Single-player</li><li>Gameplay</li><li>Tooling</li></ul>
                 </header>
                 <div class="stage"><img src="media/img/singular-3.jpg" alt="The Singular Ones screenshot"></div>
                 <div class="thumbs">
@@ -379,7 +402,6 @@ footer p { margin: 0; color: var(--muted); }
                 <header class="card-head">
                   <h4>RESEED</h4>
                   <p class="meta">Released Apr 2026 · 2-person team · Steam</p>
-                  <ul class="chips"><li>Unity</li><li>C#</li><li>2D</li><li>Puzzle Platformer</li><li>Single-player</li><li>Gameplay</li></ul>
                 </header>
                 <div class="stage"><img src="media/img/reseed-1.jpg" alt="RESEED gameplay screenshot"></div>
                 <div class="thumbs">
@@ -413,7 +435,6 @@ footer p { margin: 0; color: var(--muted); }
               <div class="shots">
                 <header class="card-head">
                   <h4>Egarsat</h4>
-                  <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>WebGL</li><li>Serious Games</li></ul>
                 </header>
                 <div class="stage"><img src="media/img/egarsat-1.jpg" alt="Egarsat screenshot"></div>
                 <div class="thumbs">
@@ -424,7 +445,7 @@ footer p { margin: 0; color: var(--muted); }
                 </div>
               </div>
               <div class="info">
-                <p class="lead">A gamified video game for Egarsat that teaches workplace safety through minigames, visual novels and tests.</p>
+                <p class="lead">A serious game for Egarsat that teaches workplace safety with minigames in real-life scenarios.</p>
                 <p class="did-label">What I did</p>
                 <ul class="did">
                   <li>Joined in the final stretch of development and quickly got up to speed with the existing codebase without disrupting the team.</li>
@@ -446,7 +467,6 @@ footer p { margin: 0; color: var(--muted); }
               <div class="info">
                 <header class="card-head">
                   <h4>XRoam SDK</h4>
-                  <ul class="chips"><li>Unity</li><li>C#</li><li>VR</li><li>Multiplayer</li><li>Tooling</li><li>XR Stack</li><li>Pico</li></ul>
                 </header>
                 <p class="lead">A user-friendly toolset to create, deploy and run location-based VR experiences on Pico headsets.</p>
                 <div class="stats-block">
@@ -491,7 +511,6 @@ footer p { margin: 0; color: var(--muted); }
                 <header class="card-head">
                   <h4>Deflector</h4>
                   <p class="meta">Released Mar 2023 · 7-person team · PC &amp; consoles</p>
-                  <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>Roguelite</li><li>Single-player</li><li>Gameplay</li><li>Enemy AI</li></ul>
                 </header>
                 <div class="stage"><img src="media/img/deflector-1.jpg" alt="Deflector gameplay screenshot"></div>
                 <div class="thumbs">
@@ -524,32 +543,28 @@ footer p { margin: 0; color: var(--muted); }
         </article>
       </li>
       </ol>
-    </div>
-  </section>
-
-  <section class="edu" id="teaching">
-    <div class="wrap">
+      <div class="edu" id="teaching">
       <h2 class="sec-label">Teaching</h2>
-      <article class="edu-card" data-type="teaching">
+      <article class="edu-card">
         <p class="when">2026</p>
         <h3>Unity Instructor</h3>
         <p class="role"><b>Biblioteques de Barcelona</b> · Weekly workshop</p>
         <p class="lead">Teaching “From Zero to Hero”, an introductory game development workshop in Unity for teens aged 12–15. Students go from zero experience to building their own playable game, learning programming basics, game logic and teamwork along the way.</p>
-        <a class="edu-link" href="https://ajuntament.barcelona.cat/biblioteques/ca/bibcanfabra/activities/99400785077">Biblioteca Can Fabra ↗</a>
+        <a class="btn sm edu-link" href="https://ajuntament.barcelona.cat/biblioteques/ca/bibcanfabra/activities/99400785077">Biblioteca Can Fabra ↗</a>
       </article>
-    </div>
-  </section>
-
-  <section class="edu" id="education">
-    <div class="wrap">
+      </div>
+      <div class="edu" id="education">
       <h2 class="sec-label">Education</h2>
       <article class="edu-card">
         <p class="when">2015 – 2020</p>
         <h3>Video Game Design and Development</h3>
-        <p class="role">Bachelor's degree · <b>CITM (UPC)</b></p>
+        <p class="role">Bachelor's degree · <b>Tech Talent Center (UPC)</b></p>
       </article>
+      </div>
+      </div>
     </div>
   </section>
+
 </main>
 
 <footer id="contact">
@@ -610,19 +625,6 @@ footer p { margin: 0; color: var(--muted); }
     buttons.forEach(function (b) {
       b.addEventListener('click', function () { stopTrailer(stage); show(b); });
     });
-
-    // Slideshow: next screenshot every few seconds, with a quick fade. Holds while the trailer plays,
-    // while the pointer or focus is on the gallery, while it's off screen or filtered out, and for reduced motion.
-    if (buttons.length < 2 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var onScreen = false;
-    new IntersectionObserver(function (e) { onScreen = e[0].isIntersecting; }).observe(stage);
-    setInterval(function () {
-      if (!onScreen || document.hidden || stage.classList.contains('playing') || shots.matches(':hover') || shots.contains(document.activeElement)) return;
-      var cur = Array.prototype.findIndex.call(buttons, function (b) { return b.getAttribute('aria-pressed') === 'true'; });
-      var next = buttons[(cur + 1) % buttons.length];
-      main.classList.add('fade');
-      setTimeout(function () { show(next); main.classList.remove('fade'); }, 250);
-    }, 4000);
   });
 
   // Length of current jobs ("Present") is computed from their start month, so it never goes stale.
@@ -641,7 +643,7 @@ footer p { margin: 0; color: var(--muted); }
     bar.classList.toggle('is-hidden', entries[0].isIntersecting);
   }, { rootMargin: '-64px 0px 0px 0px' }).observe(document.querySelector('.hero'));
 
-  // Type filters work per project card (a card's data-type, else its entry's); an entry hides when none of its cards match.
+  // Type filters work per timeline card (a card's data-type, else its entry's); an entry hides when none of its cards match.
   var filters = document.querySelectorAll('.filters button');
 
   filters.forEach(function (f) {
@@ -661,7 +663,7 @@ footer p { margin: 0; color: var(--muted); }
       });
     });
   });
-  // A highlight pointing at a card the current filter hides resets the filter first.
+  // A project card pointing at an entry the current filter hides resets the filter first.
   document.querySelectorAll('.hl').forEach(function (h) {
     h.addEventListener('click', function () {
       var target = document.querySelector(h.getAttribute('href'));
