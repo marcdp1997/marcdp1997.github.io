@@ -67,7 +67,7 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .btn:hover { border-color: var(--accent); }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
-/* experience timeline: every job is the same card (type, project, role · company, what I did, facts, links); media column only when there are screenshots */
+/* experience timeline: every job is the same card: text column (project, description, facts, what I did, links) first, media column on the right */
 .exp { padding-block: 72px; }
 .highlights { display: grid; gap: 20px; margin-bottom: 72px; }
 .hl-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
@@ -85,8 +85,8 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .hl-desc { margin: 0; font-size: .9rem; line-height: 1.45; color: var(--muted); }
 /* genre line + chips: what it is, area and mode first (in the type colour), then platform and key tech */
 .genre { margin: 0; font-size: .95rem; color: var(--muted); }
-.chips { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
-.chips li { font: 500 .72rem/1 var(--mono); padding: 5px 8px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
+.chips { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 4px; }
+.chips li { font: 500 .72rem/1 var(--mono); padding: 3px 6px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
 .chips .key { color: var(--type); border-color: color-mix(in srgb, var(--type) 45%, transparent); }
 .sec-label { margin: 0; font: 600 1.5rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .exp-head { display: grid; gap: 20px; margin-bottom: 40px; }
@@ -108,12 +108,11 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .when { margin: 0; font: 500 1rem/22px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
 .when .now { color: inherit; }
 .when .dur { color: var(--muted); }
-/* company header: dates, company, role and what the company is; its projects follow as smaller cards */
+/* company header: dates, company and role; its projects follow as smaller cards */
 .co { display: grid; gap: 6px; }
 .co h3 { margin: 4px 0 0; font: 700 clamp(2rem, 5vw, 3rem)/1 var(--display); text-wrap: balance; }
 .co-role { margin: 0; font: 600 1.15rem/1.3 var(--body); color: var(--type); }
 .co-type { font-weight: 500; color: var(--muted); }
-.co-about { margin: 2px 0 0; color: var(--muted); }
 .entry { scroll-margin-top: 80px; }
 .type { font: 500 .72rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 6px 9px; border-radius: 4px; color: var(--type); border: 1px solid var(--type); background: color-mix(in srgb, var(--type) 10%, transparent); }
 
@@ -122,25 +121,28 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .card[hidden] { display: none; }
 .card-head { display: grid; gap: 6px; }
 .card-head .tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn.sm { flex: none; gap: 6px; padding: 7px 11px; font-size: .8rem; }
+.btn.sm svg { width: 14px; height: 14px; fill: currentColor; }
 .card h4 { margin: 0; font: 700 clamp(1.4rem, 3vw, 1.8rem)/1.05 var(--display); text-wrap: balance; }
 .role { margin: 0; font-size: 1.05rem; color: var(--muted); }
 .role b { color: var(--ink); font-weight: 600; }
 .body { display: grid; gap: 24px; align-items: start; }
-/* two columns of equal height: screenshots keep their native 16:9, XRoam tiles stretch, the text is centred vertically */
-.body.media { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: stretch; }
-/* XRoam only: text first, built-with projects on the right */
-.body.media-right { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
-.body.game { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+/* two equal columns: text on the left, screenshots (16:9) or XRoam tiles (stretched to fill) on the right; both centred vertically */
+.body.media { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; }
 
-.shots { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.shots .card-head { margin-bottom: 6px; }
+.shots { display: flex; flex-direction: column; justify-content: center; gap: 8px; min-width: 0; }
 .stage { flex: none; position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #000; }
 .stage img, .stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.stage img { transition: opacity .25s; }
+.stage img.fade { opacity: 0; }
 .stage video { z-index: 1; }
-.play { position: absolute; left: 10px; bottom: 10px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: 600 .82rem/1 var(--body); cursor: pointer; box-shadow: 0 4px 18px rgb(0 0 0 / .45); }
+.play { position: absolute; left: 10px; bottom: 10px; z-index: 2; display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: 600 .8rem/1 var(--body); cursor: pointer; box-shadow: 0 4px 18px rgb(0 0 0 / .45); }
 .play svg { width: 12px; height: 12px; fill: currentColor; }
 .play:hover { filter: brightness(1.08); }
 .stage.playing .play { display: none; }
+/* store link on the main screenshot, opposite the trailer button */
+.stage .store { position: absolute; right: 10px; bottom: 10px; z-index: 2; box-shadow: 0 4px 18px rgb(0 0 0 / .45); }
+.stage.playing .store { display: none; }
 .thumbs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
 .thumbs button { padding: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: none; cursor: pointer; aspect-ratio: 16 / 9; opacity: .55; transition: opacity .15s, border-color .15s; }
 .thumbs button img { width: 100%; height: 100%; object-fit: cover; }
@@ -156,6 +158,8 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 /* key numbers (XRoam, Deflector): caption saying what they measure, inline "number label", quick-info frame */
 .stats-block { display: grid; gap: 8px; padding-block: 10px; border-block: 1px solid var(--line); }
 .stats-block .stats { gap: 6px 26px; }
+/* key numbers head the media column, above the screenshots or the XRoam tiles */
+.shots > .stats-block, .tiles-wrap > .stats-block { margin-bottom: 6px; }
 .stats-block .stats div { flex-direction: row-reverse; justify-content: flex-end; align-items: baseline; gap: 7px; }
 .stats-block .stats dt { font-size: .95rem; color: var(--ink); }
 /* highlight cards are narrow: same numbers, smaller, on one line when it fits */
@@ -171,12 +175,10 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .did li { position: relative; padding-left: 22px; max-width: 75ch; }
 .did li::before { content: ""; position: absolute; left: 0; top: .62em; width: 10px; height: 2px; background: var(--type); }
 .facts { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 10px 16px; padding-block: 10px; border-block: 1px solid var(--line); }
-.info > .facts:first-child { padding-top: 4px; border-top: 0; }
 .facts div { display: grid; align-content: start; gap: 3px; }
 .facts dt { font: 500 .68rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .facts dd { margin: 0; font-size: .92rem; line-height: 1.35; }
 .facts a { color: var(--type); text-decoration: none; white-space: nowrap; }
-.links { display: flex; flex-wrap: wrap; gap: 10px; }
 .badge { font: 500 .72rem/1 var(--mono); padding: 6px 9px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
 
 .edu { padding-bottom: 72px; }
@@ -188,18 +190,20 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .edu-link:hover { text-decoration: underline; }
 
 /* XRoam has no screenshots of its own: Univrse projects built with it take the media slot, captioned as theirs */
-.tiles-wrap { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.tiles-wrap { display: flex; flex-direction: column; justify-content: center; gap: 10px; min-width: 0; }
 .tiles-cap { margin: 0; font: 500 .72rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.tiles { flex: 1 0 auto; margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(90px, 1fr); gap: 8px; }
+/* tiles grow to fill whatever height the text column leaves */
+.tiles { flex: 1 0 auto; margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: minmax(80px, 1fr); gap: 8px; }
 .tiles a { position: relative; display: block; height: 100%; overflow: hidden; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); text-decoration: none; transition: border-color .15s, transform .15s; }
 .tiles a::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgb(0 0 0 / .8) 0%, rgb(0 0 0 / .1) 60%); }
 .tiles img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
 .tiles a:hover { border-color: var(--type); transform: translateY(-2px); }
 .tiles a:hover img { transform: scale(1.04); }
-.tiles .t { position: absolute; left: 12px; right: 12px; bottom: 10px; z-index: 1; font: 600 1rem/1.2 var(--display); color: #fff; }
-.tiles .all a { display: grid; place-content: center; text-align: center; color: var(--type); }
+/* link to the rest of the catalogue: a tile like the projects, with the store buttons' see-through fill and text colour */
+.tiles .all a { display: grid; place-content: center; text-align: center; background: color-mix(in srgb, var(--surface) 80%, transparent); color: var(--ink); }
 .tiles .all a::after { content: none; }
 .tiles .all .t { position: static; color: inherit; }
+.tiles .t { position: absolute; left: 10px; right: 10px; bottom: 8px; z-index: 1; font: 600 .88rem/1.2 var(--display); color: #fff; }
 
 footer { padding-block: 72px 88px; border-top: 1px solid var(--line); }
 footer .wrap { display: grid; gap: 14px; }
@@ -304,7 +308,7 @@ footer p { margin: 0; color: var(--muted); }
                   <div><dt>visitors</dt><dd>4M+</dd></div>
                 </dl>
               </div>
-              <ul class="chips"><li>Unity</li><li>C#</li><li>VR</li><li>Multiplayer</li><li>Tooling</li><li>FishNet</li><li>XR Interaction Toolkit</li><li>Pico</li></ul>
+              <ul class="chips"><li>Unity</li><li>C#</li><li>VR</li><li>Multiplayer</li><li>Tooling</li><li>XR Stack</li><li>Pico</li></ul>
             </div>
           </a>
           <a class="hl" href="#singular-ones" data-type="games">
@@ -333,37 +337,35 @@ footer p { margin: 0; color: var(--muted); }
           <p class="when">Oct 2025 – <span class="now">Present</span> <span class="dur" data-from="2025-10">· 1 yr 1 mo</span></p>
           <h3>Bearded Pixels Games</h3>
           <p class="co-role">Unity Developer <span class="co-type">· Full-time</span></p>
-          <p class="co-about">Small indie studio that develops and self-publishes beautifully illustrated games with a unique visual identity.</p>
         </header>
         <article class="card">
-          <div class="body media game">
-              <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/4754310/788719265/bf53c22b9369df2d5a8b7f0c2a550607ce240f05/1779184134/hls_264_master.m3u8?t=1780572088">
+          <div class="body media">
+              <div class="info">
                 <header class="card-head">
                   <h4>The Singular Ones</h4>
                   <ul class="chips"><li>Unity</li><li>C#</li><li>2D</li><li>Illustrated</li><li>Single-player</li><li>Gameplay</li><li>Tooling</li></ul>
                 </header>
-                <div class="stage"><img src="media/img/singular-3.jpg" alt="The Singular Ones screenshot"></div>
-                <div class="thumbs">
-                  <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/singular-3.jpg" alt=""></button>
-                  <button type="button" aria-pressed="false" aria-label="Screenshot 2"><img src="media/img/singular-5.jpg" alt=""></button>
-                  <button type="button" aria-pressed="false" aria-label="Screenshot 3"><img src="media/img/singular-2.jpg" alt=""></button>
-                  <button type="button" aria-pressed="false" aria-label="Screenshot 4"><img src="media/img/singular-4.jpg" alt=""></button>
-                </div>
-              </div>
-              <div class="info">
+                <p class="lead">A cozy logic-mystery puzzle game that alternates visual-novel story scenes with deduction puzzles. Place characters and objects in the right rooms at Corvane Academy by following a set of coexistence rules.</p>
                 <dl class="facts">
                   <div><dt>Team</dt><dd>4 people</dd></div>
                   <div><dt>Release</dt><dd>Q1 2027</dd></div>
                   <div><dt>Platform</dt><dd>PC (Steam)</dd></div>
                 </dl>
-                <p class="lead">A cozy logic-mystery puzzle game that alternates visual-novel story scenes with deduction puzzles. Place characters and objects in the right rooms at Corvane Academy by following a set of coexistence rules.</p>
                 <p class="did-label">What I did</p>
                 <ul class="did">
                   <li>Sole Unity developer on a four-person team: own the core architecture, gameplay systems and in-game art implementation.</li>
                   <li>To speed up puzzle design, built a procedural puzzle generator: designers generate puzzles from difficulty and house layout, try them in the game and export the ones they like as JSON.</li>
                   <li>Built an import pipeline that brings every visual-novel scene and puzzle into the game as ScriptableObjects. Today that is 100+ scenes and 40+ puzzles, imported in one click, so the team can test new puzzles and iterate on the narrative really fast.</li>
                 </ul>
-                <div class="links"><a class="btn" href="https://store.steampowered.com/app/4754310/The_Singular_Ones/">Wishlist on Steam ↗</a></div>
+              </div>
+              <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/4754310/788719265/bf53c22b9369df2d5a8b7f0c2a550607ce240f05/1779184134/hls_264_master.m3u8?t=1780572088">
+                <div class="stage"><img src="media/img/singular-3.jpg" alt="The Singular Ones screenshot"><a class="btn sm store" href="https://store.steampowered.com/app/4754310/The_Singular_Ones/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>Steam ↗</a></div>
+                <div class="thumbs">
+                  <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/singular-3.jpg" alt=""></button>
+                  <button type="button" aria-pressed="false" aria-label="Screenshot 2"><img src="media/img/singular-5.jpg" alt=""></button>
+                  <button type="button" aria-pressed="false" aria-label="Screenshot 3"><img src="media/img/singular-2.jpg" alt=""></button>
+                  <button type="button" aria-pressed="false" aria-label="Screenshot 4"><img src="media/img/singular-4.jpg" alt=""></button>
+                </div>
               </div>
           </div>
         </article>
@@ -373,38 +375,36 @@ footer p { margin: 0; color: var(--muted); }
           <p class="when">Jun 2025 – <span class="now">Present</span> <span class="dur" data-from="2025-06">· 1 yr 5 mos</span></p>
           <h3>Headless Division</h3>
           <p class="co-role">Co-founder &amp; Unity Developer <span class="co-type">· Side project</span></p>
-          <p class="co-about">Three-person indie studio focused on rapid prototyping to create small but creative games.</p>
         </header>
         <article class="card">
-          <div class="body media game">
-              <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/3954440/1740601381/3aed9861b669e9296e61c71306db50ca59ad4b82/1771756458/hls_264_master.m3u8?t=1771756754">
+          <div class="body media">
+              <div class="info">
                 <header class="card-head">
                   <h4>RESEED</h4>
                   <ul class="chips"><li>Unity</li><li>C#</li><li>2D</li><li>Pixel Art</li><li>Single-player</li><li>Gameplay</li></ul>
                 </header>
-                <div class="stage"><img src="media/img/reseed-1.jpg" alt="RESEED gameplay screenshot"></div>
-                <div class="thumbs">
-                  <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/reseed-1.jpg" alt=""></button>
-                  <button type="button" aria-pressed="false" aria-label="Screenshot 2"><img src="media/img/reseed-2.jpg" alt=""></button>
-                  <button type="button" aria-pressed="false" aria-label="Screenshot 3"><img src="media/img/reseed-3.jpg" alt=""></button>
-                  <button type="button" aria-pressed="false" aria-label="Screenshot 4"><img src="media/img/reseed-4.jpg" alt=""></button>
-                </div>
-              </div>
-              <div class="info">
+                <p class="lead">A puzzle platformer played in two phases. First, plan your route through an empty, safe level. Then a little seed follows your exact moves through the same level, now full of traps. If it dies, adjust your route and try again.</p>
                 <dl class="facts">
                   <div><dt>Team</dt><dd>2 people</dd></div>
                   <div><dt>Development</dt><dd>3 months</dd></div>
                   <div><dt>Released</dt><dd>Apr 2026</dd></div>
                   <div><dt>Platform</dt><dd>PC (Steam)</dd></div>
                 </dl>
-                <p class="lead">A puzzle platformer about planning, played in two phases. First you record a path through an empty, safe level. Then a seed replays your exact moves through the same level, now full of traps. If it dies, you learn from it, adjust your route and try again.</p>
                 <p class="did-label">What I did</p>
                 <ul class="did">
                   <li>Programmed the entire game and shipped it on Steam in 3 months, from first prototype to release.</li>
                   <li>Built the record-and-replay core loop that captures the player's planned path and replays it through the trap-filled level.</li>
                   <li>Covered the full release scope: control remapping with Unity's new Input System, localization into 8 languages, colorblind options and Steam achievements.</li>
                 </ul>
-                <div class="links"><a class="btn" href="https://store.steampowered.com/app/3954440/RESEED/">View on Steam ↗</a></div>
+              </div>
+              <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/3954440/1740601381/3aed9861b669e9296e61c71306db50ca59ad4b82/1771756458/hls_264_master.m3u8?t=1771756754">
+                <div class="stage"><img src="media/img/reseed-1.jpg" alt="RESEED gameplay screenshot"><a class="btn sm store" href="https://store.steampowered.com/app/3954440/RESEED/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>Steam ↗</a></div>
+                <div class="thumbs">
+                  <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/reseed-1.jpg" alt=""></button>
+                  <button type="button" aria-pressed="false" aria-label="Screenshot 2"><img src="media/img/reseed-2.jpg" alt=""></button>
+                  <button type="button" aria-pressed="false" aria-label="Screenshot 3"><img src="media/img/reseed-3.jpg" alt=""></button>
+                  <button type="button" aria-pressed="false" aria-label="Screenshot 4"><img src="media/img/reseed-4.jpg" alt=""></button>
+                </div>
               </div>
           </div>
         </article>
@@ -414,15 +414,28 @@ footer p { margin: 0; color: var(--muted); }
           <p class="when">Feb 2026 – Jul 2026 <span class="dur">· 6 mos</span></p>
           <h3>Cookie Box Group</h3>
           <p class="co-role">Unity Developer <span class="co-type">· Part-time · Outsourced from Bearded Pixels Games</span></p>
-          <p class="co-about">Consultancy specialised in gamification, storytelling and serious games for corporate clients.</p>
         </header>
         <article class="card" id="egarsat">
-          <div class="body media game">
-              <div class="shots">
+          <div class="body media">
+              <div class="info">
                 <header class="card-head">
                   <h4>Egarsat</h4>
                   <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>WebGL</li><li>Serious Games</li></ul>
                 </header>
+                <p class="lead">A gamified video game for Egarsat that teaches workplace safety through minigames, visual novels and tests.</p>
+                <dl class="facts">
+                  <div><dt>Team</dt><dd>17 people</dd></div>
+                  <div><dt>Development</dt><dd>2 years</dd></div>
+                  <div><dt>Platform</dt><dd>Browser</dd></div>
+                </dl>
+                <p class="did-label">What I did</p>
+                <ul class="did">
+                  <li>Joined in the final stretch of development and quickly got up to speed with the existing codebase without disrupting the team.</li>
+                  <li>Implemented two of its minigames, a road driving simulator and a warehouse forklift driving simulator, delivering the full 3D implementation on a tight deadline: asset integration, lighting, physics and gameplay.</li>
+                  <li>Optimized for WebGL by baking all lighting and simplifying physics, so it ran smoothly in the browser on low-end PCs.</li>
+                </ul>
+              </div>
+              <div class="shots">
                 <div class="stage"><img src="media/img/egarsat-1.jpg" alt="Egarsat screenshot"></div>
                 <div class="thumbs">
                   <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/egarsat-1.jpg" alt=""></button>
@@ -430,20 +443,6 @@ footer p { margin: 0; color: var(--muted); }
                   <button type="button" aria-pressed="false" aria-label="Screenshot 3"><img src="media/img/egarsat-3.jpg" alt=""></button>
                   <button type="button" aria-pressed="false" aria-label="Screenshot 4"><img src="media/img/egarsat-4.jpg" alt=""></button>
                 </div>
-              </div>
-              <div class="info">
-                <dl class="facts">
-                  <div><dt>Team</dt><dd>17 people</dd></div>
-                  <div><dt>Development</dt><dd>2 years</dd></div>
-                  <div><dt>Platform</dt><dd>Browser</dd></div>
-                </dl>
-                <p class="lead">A gamified video game for Egarsat that teaches workplace safety through minigames, visual novels and tests.</p>
-                <p class="did-label">What I did</p>
-                <ul class="did">
-                  <li>Joined in the final stretch of development and quickly got up to speed with the existing codebase without disrupting the team.</li>
-                  <li>Implemented two of its minigames, a road driving simulator and a warehouse forklift driving simulator, delivering the full 3D implementation on a tight deadline: asset integration, lighting, physics and gameplay.</li>
-                  <li>Optimized for WebGL by baking all lighting and simplifying physics, so it ran smoothly in the browser on low-end PCs.</li>
-                </ul>
               </div>
           </div>
         </article>
@@ -453,16 +452,24 @@ footer p { margin: 0; color: var(--muted); }
           <p class="when">Jan 2024 – May 2025 <span class="dur">· 1 yr 5 mos</span></p>
           <h3>UNIVRSE</h3>
           <p class="co-role">Mid Unity Developer <span class="co-type">· Full-time</span></p>
-          <p class="co-about">Company building multiplayer, location-based VR experiences for museums, festivals and brands.</p>
         </header>
         <article class="card">
-          <div class="body media media-right">
+          <div class="body media">
               <div class="info">
                 <header class="card-head">
                   <h4>XRoam SDK</h4>
-                  <ul class="chips"><li>Unity</li><li>C#</li><li>VR</li><li>Multiplayer</li><li>Tooling</li><li>FishNet</li><li>XR Interaction Toolkit</li><li>Pico</li></ul>
+                  <ul class="chips"><li>Unity</li><li>C#</li><li>VR</li><li>Multiplayer</li><li>Tooling</li><li>XR Stack</li><li>Pico</li></ul>
                 </header>
                 <p class="lead">A user-friendly toolset to create, deploy and run location-based VR experiences on Pico headsets.</p>
+                <p class="did-label">What I did</p>
+                <ul class="did">
+                  <li>Reworked most of the FishNet core networking to keep shared sessions of 50+ headsets stable and reliable.</li>
+                  <li>Created editor tools with Custom Inspectors and UI Toolkit windows that let creators build multiplayer experiences with little or no code.</li>
+                  <li>Worked across the XR stack: OpenXR, XR Interaction Toolkit, Pico SDK and hand tracking.</li>
+                  <li>Gave technical support to the experience team, integrating and troubleshooting XRoam in client projects.</li>
+                </ul>
+              </div>
+              <div class="tiles-wrap">
                 <div class="stats-block">
                   <p class="stats-cap">Across all experiences built with XRoam</p>
                   <dl class="stats">
@@ -471,16 +478,6 @@ footer p { margin: 0; color: var(--muted); }
                     <div><dt>visitors</dt><dd>4M+</dd></div>
                   </dl>
                 </div>
-                <p class="did-label">What I did</p>
-                <ul class="did">
-                  <li>Reworked most of the FishNet core networking to keep shared sessions of 50+ headsets stable and reliable.</li>
-                  <li>Created editor tools with Custom Inspectors and UI Toolkit windows that let creators build multiplayer experiences with little or no code.</li>
-                  <li>Worked across the XR stack: OpenXR, XR Interaction Toolkit, Pico SDK and hand tracking.</li>
-                  <li>Gave technical support to the experience team, integrating and troubleshooting XRoam in client projects.</li>
-                </ul>
-                <div class="links"><a class="btn" href="https://solutions.xroam.com/">XRoam ↗</a></div>
-              </div>
-              <div class="tiles-wrap">
                 <p class="tiles-cap" id="xroam-cap">Univrse projects built with XRoam</p>
                 <ul class="tiles" aria-labelledby="xroam-cap">
                   <li><a href="https://www.univr.se/project/tomorrowland"><img src="media/img/xroam-tomorrowland.jpg" alt="" loading="lazy"><span class="t">Tomorrowland</span></a></li>
@@ -499,31 +496,30 @@ footer p { margin: 0; color: var(--muted); }
           <p class="when">Feb 2020 – Dec 2023 <span class="dur">· 3 yrs 11 mos</span></p>
           <h3>Arrowfist Games</h3>
           <p class="co-role">Co-founder &amp; Unity Developer <span class="co-type">· Full-time</span></p>
-          <p class="co-about">Seven-person indie studio, incubated in the 5th edition of GameBCN and signed with publisher SuperGG.</p>
         </header>
         <article class="card">
-          <div class="body media game">
-              <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/1736550/551523/a86c25e3b011ff77da19d4791953a373c15e7436/1751025667/hls_264_master.m3u8?t=1679669634">
+          <div class="body media">
+              <div class="info">
                 <header class="card-head">
                   <h4>Deflector</h4>
                   <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>Low Poly</li><li>Single-player</li><li>Gameplay</li><li>Enemy AI</li></ul>
                 </header>
-                <div class="stage"><img src="media/img/deflector-1.jpg" alt="Deflector gameplay screenshot"></div>
-                <div class="thumbs">
-                  <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/deflector-1.jpg" alt=""></button>
-                  <button type="button" aria-pressed="false" aria-label="Screenshot 2"><img src="media/img/deflector-2.jpg" alt=""></button>
-                  <button type="button" aria-pressed="false" aria-label="Screenshot 3"><img src="media/img/deflector-3.jpg" alt=""></button>
-                  <button type="button" aria-pressed="false" aria-label="Screenshot 4"><img src="media/img/deflector-4.jpg" alt=""></button>
-                </div>
-              </div>
-              <div class="info">
+                <p class="lead">A top-down action roguelite incubated in the 5th edition of GameBCN and published by SuperGG. Fight through a deadly microscopic world, deflecting the viruses' projectiles back at them.</p>
                 <dl class="facts">
                   <div><dt>Team</dt><dd>7 people</dd></div>
                   <div><dt>Development</dt><dd>3 years</dd></div>
                   <div><dt>Released</dt><dd>Mar 2023</dd></div>
                   <div><dt>Platforms</dt><dd>PC · Consoles</dd></div>
                 </dl>
-                <p class="lead">A top-down action roguelite set in a deadly microscopic world. Fight through hostile biomes full of viruses, sending enemy projectiles back at them with your deflect. Live, die, grow stronger and become powerful enough to reach the Source!</p>
+                <p class="did-label">What I did</p>
+                <ul class="did">
+                  <li>Co-led the entire Unity development, while also contributing to design and production.</li>
+                  <li>Implemented every enemy AI, all playable characters, their skills, world hazards and randomization, boss fights and polished game feel across combat.</li>
+                  <li>Built a system that imports all gameplay balancing data from JSON, so the team could test and iterate on design fast without opening the engine.</li>
+                  <li>Integrated Steamworks and Epic Online Services: achievements and analytics on both stores.</li>
+                </ul>
+              </div>
+              <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/1736550/551523/a86c25e3b011ff77da19d4791953a373c15e7436/1751025667/hls_264_master.m3u8?t=1679669634">
                 <div class="stats-block">
                   <p class="stats-cap">On Steam</p>
                   <dl class="stats">
@@ -532,14 +528,13 @@ footer p { margin: 0; color: var(--muted); }
                     <div><dt>positive</dt><dd>87%</dd></div>
                   </dl>
                 </div>
-                <p class="did-label">What I did</p>
-                <ul class="did">
-                  <li>Co-led the entire Unity development, while also contributing to design and production.</li>
-                  <li>Implemented every enemy AI, all playable characters, their skills, world hazards and randomization, boss fights and polished game feel across combat.</li>
-                  <li>Built a system that imports all gameplay balancing data from JSON, so the team could test and iterate on design fast without opening the engine.</li>
-                  <li>Integrated Steamworks and Epic Online Services: achievements and analytics on both stores.</li>
-                </ul>
-                <div class="links"><a class="btn" href="https://store.steampowered.com/app/1736550/Deflector/">View on Steam ↗</a></div>
+                <div class="stage"><img src="media/img/deflector-1.jpg" alt="Deflector gameplay screenshot"><a class="btn sm store" href="https://store.steampowered.com/app/1736550/Deflector/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>Steam ↗</a></div>
+                <div class="thumbs">
+                  <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/deflector-1.jpg" alt=""></button>
+                  <button type="button" aria-pressed="false" aria-label="Screenshot 2"><img src="media/img/deflector-2.jpg" alt=""></button>
+                  <button type="button" aria-pressed="false" aria-label="Screenshot 3"><img src="media/img/deflector-3.jpg" alt=""></button>
+                  <button type="button" aria-pressed="false" aria-label="Screenshot 4"><img src="media/img/deflector-4.jpg" alt=""></button>
+                </div>
               </div>
           </div>
         </article>
@@ -596,7 +591,7 @@ footer p { margin: 0; color: var(--muted); }
       hls.loadSource(url); hls.attachMedia(v);
       v._hls = hls;
     } else {
-      window.open(stage.closest('.card').querySelector('.links a').href, '_blank');
+      window.open(stage.querySelector('.store').href, '_blank');
       return;
     }
     stage.appendChild(v);
@@ -624,13 +619,26 @@ footer p { margin: 0; color: var(--muted); }
       play.addEventListener('click', function () { playTrailer(stage, url); });
       stage.appendChild(play);
     }
+    function show(b) {
+      main.src = b.querySelector('img').src;
+      buttons.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+    }
     buttons.forEach(function (b) {
-      b.addEventListener('click', function () {
-        stopTrailer(stage);
-        main.src = b.querySelector('img').src;
-        buttons.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
-      });
+      b.addEventListener('click', function () { stopTrailer(stage); show(b); });
     });
+
+    // Slideshow: next screenshot every few seconds, with a quick fade. Holds while the trailer plays,
+    // while the pointer or focus is on the gallery, while it's off screen or filtered out, and for reduced motion.
+    if (buttons.length < 2 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var onScreen = false;
+    new IntersectionObserver(function (e) { onScreen = e[0].isIntersecting; }).observe(stage);
+    setInterval(function () {
+      if (!onScreen || document.hidden || stage.classList.contains('playing') || shots.matches(':hover') || shots.contains(document.activeElement)) return;
+      var cur = Array.prototype.findIndex.call(buttons, function (b) { return b.getAttribute('aria-pressed') === 'true'; });
+      var next = buttons[(cur + 1) % buttons.length];
+      main.classList.add('fade');
+      setTimeout(function () { show(next); main.classList.remove('fade'); }, 250);
+    }, 4000);
   });
 
   // Length of current jobs ("Present") is computed from their start month, so it never goes stale.
