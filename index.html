@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Marc de Pedro Portfolio</title>
-<meta name="description" content="Marc de Pedro, Unity developer in Barcelona. Co-founded two indie studios, shipped games on Steam &amp; Epic, helped build a multi-user VR SDK. Gameplay and tools.">
+<meta name="description" content="Marc de Pedro, Unity developer in Barcelona. Co-founded two indie studios, shipped games on Steam &amp; Epic, helped build a multiplayer VR SDK. Gameplay and tools.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://marcdp1997.github.io/">
 <meta property="og:title" content="Marc de Pedro · Unity Developer">
-<meta property="og:description" content="Unity developer · Gameplay, tools and multi-user VR · Shipped games on Steam &amp; Epic">
+<meta property="og:description" content="Unity developer · Gameplay, tools and multiplayer VR · Shipped games on Steam &amp; Epic">
 <meta property="og:image" content="https://marcdp1997.github.io/media/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -107,10 +107,12 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .entry::before { content: ""; position: absolute; z-index: 1; left: -36px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--type); }
 .when { margin: 0; font: 500 1rem/22px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
 .when .now { color: inherit; }
+.when .dur { color: var(--muted); }
 /* company header: dates, company, role and what the company is; its projects follow as smaller cards */
 .co { display: grid; gap: 6px; }
 .co h3 { margin: 4px 0 0; font: 700 clamp(2rem, 5vw, 3rem)/1 var(--display); text-wrap: balance; }
 .co-role { margin: 0; font: 600 1.15rem/1.3 var(--body); color: var(--type); }
+.co-type { font-weight: 500; color: var(--muted); }
 .co-about { margin: 2px 0 0; color: var(--muted); }
 .entry { scroll-margin-top: 80px; }
 .type { font: 500 .72rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 6px 9px; border-radius: 4px; color: var(--type); border: 1px solid var(--type); background: color-mix(in srgb, var(--type) 10%, transparent); }
@@ -119,12 +121,14 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 /* several projects at one company: one timeline dot, cards stacked; a card's own data-type overrides the entry's for colour and filtering */
 .card[hidden] { display: none; }
 .card-head { display: grid; gap: 6px; }
+.card-note { margin: 0 0 2px; font-size: .88rem; color: var(--muted); }
+.card-note b { font-weight: 600; color: var(--type); }
 .card-head .tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .card h4 { margin: 0; font: 700 clamp(1.4rem, 3vw, 1.8rem)/1.05 var(--display); text-wrap: balance; }
 .role { margin: 0; font-size: 1.05rem; color: var(--muted); }
 .role b { color: var(--ink); font-weight: 600; }
 .body { display: grid; gap: 24px; align-items: start; }
-/* two columns that end at the same height: screenshots keep their native 16:9, XRoam tiles stretch, the button sits at the bottom */
+/* two columns of equal height: screenshots keep their native 16:9, XRoam tiles stretch, the text is centred vertically */
 .body.media { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: stretch; }
 /* XRoam only: text first, built-with projects on the right */
 .body.media-right { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
@@ -139,19 +143,29 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .play svg { width: 12px; height: 12px; fill: currentColor; }
 .play:hover { filter: brightness(1.08); }
 .stage.playing .play { display: none; }
-.thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.thumbs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
 .thumbs button { padding: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: none; cursor: pointer; aspect-ratio: 16 / 9; opacity: .55; transition: opacity .15s, border-color .15s; }
 .thumbs button img { width: 100%; height: 100%; object-fit: cover; }
 .thumbs button:hover, .thumbs button[aria-pressed="true"] { opacity: 1; border-color: var(--accent); }
 
 .info { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.info .links { margin-top: auto; }
+/* when the images are taller, the text sits centred next to them */
+.body.media > .info { justify-content: center; }
 .lead { margin: 0; font-size: .92rem; color: var(--muted); max-width: 75ch; }
 .did-label { margin: 0 0 -6px; font: 500 .68rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .stats { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 0; padding: 0; }
 .stats div { display: flex; flex-direction: column-reverse; }
-/* XRoam: its numbers belong to the experiences built with it, so they get a caption and the quick-info frame */
+/* key numbers (XRoam, Deflector): caption saying what they measure, inline "number label", quick-info frame */
 .stats-block { display: grid; gap: 8px; padding-block: 10px; border-block: 1px solid var(--line); }
+.stats-block .stats { gap: 6px 26px; }
+.stats-block .stats div { flex-direction: row-reverse; justify-content: flex-end; align-items: baseline; gap: 7px; }
+.stats-block .stats dt { font-size: .95rem; color: var(--ink); }
+/* highlight cards are narrow: same numbers, smaller, on one line when it fits */
+.hl-body { min-width: 0; }
+.hl .stats { gap: 2px 12px; }
+.hl .stats div { gap: 4px; white-space: nowrap; }
+.hl .stats dd { font-size: 1.05rem; }
+.hl .stats dt { font-size: .74rem; }
 .stats-cap { margin: 0; font: 500 .68rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .stats dd { margin: 0; font: 600 1.4rem/1.1 var(--display); color: var(--type); font-variant-numeric: tabular-nums; }
 .stats dt { font-size: .8rem; color: var(--muted); }
@@ -259,12 +273,20 @@ footer p { margin: 0; color: var(--muted); }
         <h2 class="sec-label">Highlights</h2>
         <div class="hl-grid">
           <a class="hl" href="#deflector" data-type="games">
-            <img src="media/img/deflector-2.jpg" alt="" loading="lazy">
+            <img src="media/img/deflector-capsule.jpg" alt="" loading="lazy">
             <div class="hl-body">
               <h3>Deflector</h3>
               <p class="hl-co">Arrowfist Games</p>
-              <p class="hl-desc">Top-down action roguelite where you deflect enemy projectiles back at your foes. Incubated in the 5th edition of GameBCN, released on Steam and Epic and ported to consoles.</p>
-              <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>Single-player</li><li>Gameplay</li><li>Enemy AI</li></ul>
+              <p class="hl-desc">Top-down action roguelite incubated at GameBCN. On Steam, Epic and consoles.</p>
+              <div class="stats-block">
+                <p class="stats-cap">On Steam</p>
+                <dl class="stats">
+                  <div><dt>copies sold</dt><dd>~20k</dd></div>
+                  <div><dt>reviews</dt><dd>280+</dd></div>
+                  <div><dt>positive</dt><dd>87%</dd></div>
+                </dl>
+              </div>
+              <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>Low Poly</li><li>Single-player</li><li>Gameplay</li><li>Enemy AI</li></ul>
             </div>
           </a>
           <a class="hl" href="#xroam" data-type="vr">
@@ -272,16 +294,24 @@ footer p { margin: 0; color: var(--muted); }
             <div class="hl-body">
               <h3>XRoam SDK</h3>
               <p class="hl-co">UNIVRSE</p>
-              <p class="hl-desc">Toolset to create, deploy and run multi-user, location-based VR experiences on Pico headsets.</p>
-              <ul class="chips"><li>Unity</li><li>C#</li><li>VR</li><li>Multi-user</li><li>Tooling</li><li>XR Interaction Toolkit</li><li>Pico</li></ul>
+              <p class="hl-desc">Toolset to build and run multiplayer, location-based VR experiences on Pico.</p>
+              <div class="stats-block">
+                <p class="stats-cap">Across all experiences built with XRoam</p>
+                <dl class="stats">
+                  <div><dt>users per session</dt><dd>50+</dd></div>
+                  <div><dt>installations</dt><dd>130+</dd></div>
+                  <div><dt>visitors</dt><dd>4M+</dd></div>
+                </dl>
+              </div>
+              <ul class="chips"><li>Unity</li><li>C#</li><li>VR</li><li>Multiplayer</li><li>Tooling</li><li>FishNet</li><li>XR Interaction Toolkit</li><li>Pico</li></ul>
             </div>
           </a>
           <a class="hl" href="#singular-ones" data-type="games">
-            <img src="media/img/singular-hero.jpg" alt="" loading="lazy">
+            <img src="media/img/singular-capsule.jpg" alt="" loading="lazy">
             <div class="hl-body">
               <h3>The Singular Ones</h3>
               <p class="hl-co">Bearded Pixels Games</p>
-              <p class="hl-desc">Cozy logic-mystery puzzle game: place characters and objects in rooms under coexistence rules, between visual-novel scenes.</p>
+              <p class="hl-desc">Cozy logic-mystery game mixing deduction puzzles with visual-novel scenes.</p>
               <ul class="chips"><li>Unity</li><li>C#</li><li>2D</li><li>Hand-drawn</li><li>Single-player</li><li>Gameplay</li><li>Tooling</li></ul>
             </div>
           </a>
@@ -300,10 +330,10 @@ footer p { margin: 0; color: var(--muted); }
       <ol class="timeline">
       <li class="entry" id="singular-ones" data-type="games">
         <header class="co">
-          <p class="when">Oct 2025 – <span class="now">Present</span></p>
+          <p class="when">Oct 2025 – <span class="now">Present</span> <span class="dur" data-from="2025-10">· 1 yr 1 mo</span></p>
           <h3>Bearded Pixels Games</h3>
-          <p class="co-role">Unity Developer</p>
-          <p class="co-about">Small indie studio that develops and self-publishes its own games.</p>
+          <p class="co-role">Unity Developer <span class="co-type">· Full-time</span></p>
+          <p class="co-about">Small indie studio that develops and self-publishes beautiful hand-drawn games.</p>
         </header>
         <article class="card">
           <div class="body media game">
@@ -326,7 +356,7 @@ footer p { margin: 0; color: var(--muted); }
                   <div><dt>Release</dt><dd>Q1 2027</dd></div>
                   <div><dt>Platform</dt><dd>PC (Steam)</dd></div>
                 </dl>
-                <p class="lead">Help a group of teenagers with unique powers uncover the mystery of the Soul Mirror in this cozy logic mystery puzzle game. Place characters and objects in the right rooms at Corvane Academy by following a set of coexistence rules.</p>
+                <p class="lead">A cozy logic-mystery puzzle game that alternates visual-novel story scenes with deduction puzzles. Place characters and objects in the right rooms at Corvane Academy by following a set of coexistence rules.</p>
                 <p class="did-label">What I did</p>
                 <ul class="did">
                   <li>Sole Unity developer on a four-person team: own the core architecture, gameplay systems and in-game art implementation.</li>
@@ -337,12 +367,44 @@ footer p { margin: 0; color: var(--muted); }
               </div>
           </div>
         </article>
+        <article class="card" id="egarsat" data-type="serious">
+          <div class="body media game">
+              <div class="shots">
+                <header class="card-head">
+                  <h4>Egarsat</h4>
+                  <p class="card-note"><b>Outsourced</b> to Cookie Box Group · Feb – Jul 2026 · Part-time</p>
+                  <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>WebGL</li><li>Serious Games</li></ul>
+                </header>
+                <div class="stage"><img src="media/img/egarsat-1.jpg" alt="Egarsat screenshot"></div>
+                <div class="thumbs">
+                  <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/egarsat-1.jpg" alt=""></button>
+                  <button type="button" aria-pressed="false" aria-label="Screenshot 2"><img src="media/img/egarsat-2.jpg" alt=""></button>
+                  <button type="button" aria-pressed="false" aria-label="Screenshot 3"><img src="media/img/egarsat-3.jpg" alt=""></button>
+                  <button type="button" aria-pressed="false" aria-label="Screenshot 4"><img src="media/img/egarsat-4.jpg" alt=""></button>
+                </div>
+              </div>
+              <div class="info">
+                <dl class="facts">
+                  <div><dt>Team</dt><dd>17 people</dd></div>
+                  <div><dt>Development</dt><dd>2 years</dd></div>
+                  <div><dt>Platform</dt><dd>Browser</dd></div>
+                </dl>
+                <p class="lead">A gamified video game for Egarsat that trains workplace safety risks through minigames, visual novels and tests.</p>
+                <p class="did-label">What I did</p>
+                <ul class="did">
+                  <li>Joined in the final stretch of development and quickly got up to speed with the existing codebase without disrupting the team.</li>
+                  <li>Implemented two of its minigames, a road driving simulator and a warehouse forklift driving simulator, delivering the full 3D implementation on a tight deadline: asset integration, lighting, physics and gameplay.</li>
+                  <li>Optimized for WebGL by baking all lighting and simplifying physics, so it ran smoothly in the browser on low-end PCs.</li>
+                </ul>
+              </div>
+          </div>
+        </article>
       </li>
       <li class="entry" id="reseed" data-type="games">
         <header class="co">
-          <p class="when">Jun 2025 – <span class="now">Present</span></p>
+          <p class="when">Jun 2025 – <span class="now">Present</span> <span class="dur" data-from="2025-06">· 1 yr 5 mos</span></p>
           <h3>Headless Division</h3>
-          <p class="co-role">Co-founder &amp; Unity Developer</p>
+          <p class="co-role">Co-founder &amp; Unity Developer <span class="co-type">· Side project</span></p>
           <p class="co-about">Three-person indie studio focused on rapid prototyping to create small but creative games.</p>
         </header>
         <article class="card">
@@ -367,7 +429,7 @@ footer p { margin: 0; color: var(--muted); }
                   <div><dt>Released</dt><dd>Apr 2026</dd></div>
                   <div><dt>Platform</dt><dd>PC (Steam)</dd></div>
                 </dl>
-                <p class="lead">RESEED is a puzzle platformer about planning. Record your path through a safe level, then watch it execute through the same level, now filled with traps. Will the seed survive?</p>
+                <p class="lead">A puzzle platformer about planning, played in two phases. First you record a path through an empty, safe level. Then a seed replays your exact moves through the same level, now full of traps. If it dies, you learn from it, adjust your route and try again.</p>
                 <p class="did-label">What I did</p>
                 <ul class="did">
                   <li>Programmed the entire game and shipped it on Steam in 3 months, from first prototype to release.</li>
@@ -381,9 +443,9 @@ footer p { margin: 0; color: var(--muted); }
       </li>
       <li class="entry" id="zero-to-hero" data-type="teaching">
         <header class="co">
-          <p class="when">Oct 2026 – Nov 2026</p>
+          <p class="when">Oct 2026 – Nov 2026 <span class="dur">· 2 mos</span></p>
           <h3>Biblioteques de Barcelona</h3>
-          <p class="co-role">Unity Instructor</p>
+          <p class="co-role">Unity Instructor <span class="co-type">· Weekly workshop</span></p>
           <p class="co-about">Public library network that runs free workshops for kids and teens.</p>
         </header>
         <article class="card">
@@ -401,46 +463,21 @@ footer p { margin: 0; color: var(--muted); }
           </div>
         </article>
       </li>
-      <li class="entry" id="driving-sim" data-type="serious">
-        <header class="co">
-          <p class="when">Feb 2026 – Jun 2026</p>
-          <h3>Cookie Box Group</h3>
-          <p class="co-role">Unity Developer</p>
-          <p class="co-about">Consultancy specialised in gamification, storytelling and serious games for corporate clients.</p>
-        </header>
-        <article class="card">
-          <div class="body">
-              <div class="info">
-                <header class="card-head">
-                  <h4>3D Driving Simulator</h4>
-                  <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>WebGL</li><li>Serious Games</li></ul>
-                </header>
-                <p class="lead">A serious game about risk prevention for Egarsat, playable in the browser.</p>
-                <p class="did-label">What I did</p>
-                <ul class="did">
-                  <li>Joined mid-development and got up to speed with the existing codebase without disrupting the team.</li>
-                  <li>Delivered the full 3D implementation on a tight deadline: asset integration, lighting, physics and gameplay.</li>
-                  <li>Optimized for WebGL by baking all lighting and simplifying physics.</li>
-                </ul>
-              </div>
-          </div>
-        </article>
-      </li>
       <li class="entry" id="xroam" data-type="vr">
         <header class="co">
-          <p class="when">Jan 2024 – May 2025</p>
+          <p class="when">Jan 2024 – May 2025 <span class="dur">· 1 yr 5 mos</span></p>
           <h3>UNIVRSE</h3>
-          <p class="co-role">Mid Unity Developer</p>
-          <p class="co-about">Company building multi-user, location-based VR experiences for museums, festivals and brands.</p>
+          <p class="co-role">Mid Unity Developer <span class="co-type">· Full-time</span></p>
+          <p class="co-about">Company building multiplayer, location-based VR experiences for museums, festivals and brands.</p>
         </header>
         <article class="card">
           <div class="body media media-right">
               <div class="info">
                 <header class="card-head">
                   <h4>XRoam SDK</h4>
-                  <ul class="chips"><li>Unity</li><li>C#</li><li>VR</li><li>Multi-user</li><li>Tooling</li><li>XR Interaction Toolkit</li><li>Pico</li></ul>
+                  <ul class="chips"><li>Unity</li><li>C#</li><li>VR</li><li>Multiplayer</li><li>Tooling</li><li>FishNet</li><li>XR Interaction Toolkit</li><li>Pico</li></ul>
                 </header>
-                <p class="lead">A user-friendly ecosystem to create, deploy and run location-based VR experiences on Pico headsets. I was part of the team that built it.</p>
+                <p class="lead">A user-friendly ecosystem to create, deploy and run location-based VR experiences on Pico headsets.</p>
                 <div class="stats-block">
                   <p class="stats-cap">Across all experiences built with XRoam</p>
                   <dl class="stats">
@@ -452,7 +489,7 @@ footer p { margin: 0; color: var(--muted); }
                 <p class="did-label">What I did</p>
                 <ul class="did">
                   <li>Reworked most of the FishNet core networking to keep shared sessions of 50+ headsets stable and reliable.</li>
-                  <li>Created editor tools with Custom Inspectors and UI Toolkit windows that let creators build multi-user experiences with little or no code.</li>
+                  <li>Created editor tools with Custom Inspectors and UI Toolkit windows that let creators build multiplayer experiences with little or no code.</li>
                   <li>Worked across the XR stack: OpenXR, XR Interaction Toolkit, Pico SDK and hand tracking.</li>
                   <li>Gave technical support to the experience team, integrating and troubleshooting XRoam in client projects.</li>
                 </ul>
@@ -474,9 +511,9 @@ footer p { margin: 0; color: var(--muted); }
       </li>
       <li class="entry" id="deflector" data-type="games">
         <header class="co">
-          <p class="when">Feb 2020 – Dec 2023</p>
+          <p class="when">Feb 2020 – Dec 2023 <span class="dur">· 3 yrs 11 mos</span></p>
           <h3>Arrowfist Games</h3>
-          <p class="co-role">Co-founder &amp; Unity Developer</p>
+          <p class="co-role">Co-founder &amp; Unity Developer <span class="co-type">· Full-time</span></p>
           <p class="co-about">Seven-person indie studio, incubated in the 5th edition of GameBCN.</p>
         </header>
         <article class="card">
@@ -484,7 +521,7 @@ footer p { margin: 0; color: var(--muted); }
               <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/1736550/551523/a86c25e3b011ff77da19d4791953a373c15e7436/1751025667/hls_264_master.m3u8?t=1679669634">
                 <header class="card-head">
                   <h4>Deflector</h4>
-                  <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>Single-player</li><li>Gameplay</li><li>Enemy AI</li></ul>
+                  <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>Low Poly</li><li>Single-player</li><li>Gameplay</li><li>Enemy AI</li></ul>
                 </header>
                 <div class="stage"><img src="media/img/deflector-1.jpg" alt="Deflector gameplay screenshot"></div>
                 <div class="thumbs">
@@ -501,16 +538,20 @@ footer p { margin: 0; color: var(--muted); }
                   <div><dt>Released</dt><dd>Mar 2023</dd></div>
                   <div><dt>Platforms</dt><dd>PC · Consoles</dd></div>
                 </dl>
-                <p class="lead">Deflector is a top down action rogue-lite set in a deadly microcosm. Dive deep into hostile worlds teeming with viruses. Strike down increasingly challenging enemies with your weapons and their own deflected projectiles. Live, die, grow stronger and become powerful enough to reach the Source!</p>
-                <dl class="stats">
-                  <div><dt>copies sold on Steam</dt><dd>~20k</dd></div>
-                  <div><dt>positive, 280+ reviews</dt><dd>87%</dd></div>
-                </dl>
+                <p class="lead">A top-down action roguelite set in a deadly microscopic world. Fight through hostile biomes full of viruses, sending enemy projectiles back at them with your deflect. Live, die, grow stronger and become powerful enough to reach the Source!</p>
+                <div class="stats-block">
+                  <p class="stats-cap">On Steam</p>
+                  <dl class="stats">
+                    <div><dt>copies sold</dt><dd>~20k</dd></div>
+                    <div><dt>reviews</dt><dd>280+</dd></div>
+                    <div><dt>positive</dt><dd>87%</dd></div>
+                  </dl>
+                </div>
                 <p class="did-label">What I did</p>
                 <ul class="did">
                   <li>Implemented every enemy AI, all playable characters, their skills, the biome hazards and the world randomization.</li>
                   <li>Built the boss fights and polished game feel across combat.</li>
-                  <li>Built a system that imports all gameplay balancing data from JSON, so the team could test and iterate on design fast without touching code.</li>
+                  <li>Built a system that imports all gameplay balancing data from JSON, so the team could test and iterate on design fast without opening the engine.</li>
                   <li>Integrated Steamworks and Epic Online Services: achievements and analytics on both stores.</li>
                 </ul>
                 <div class="links"><a class="btn" href="https://store.steampowered.com/app/1736550/Deflector/">View on Steam ↗</a></div>
@@ -592,6 +633,16 @@ footer p { margin: 0; color: var(--muted); }
         buttons.forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
       });
     });
+  });
+
+  // Length of current jobs ("Present") is computed from their start month, so it never goes stale.
+  document.querySelectorAll('.dur[data-from]').forEach(function (d) {
+    var p = d.dataset.from.split('-'), now = new Date();
+    var n = (now.getFullYear() - p[0]) * 12 + now.getMonth() + 1 - p[1] + 1;
+    var y = Math.floor(n / 12), m = n % 12, out = [];
+    if (y) out.push(y + (y === 1 ? ' yr' : ' yrs'));
+    if (m) out.push(m + (m === 1 ? ' mo' : ' mos'));
+    d.textContent = '· ' + out.join(' ');
   });
 
   // Top bar stays hidden while the hero (which already shows name and links) is on screen.
