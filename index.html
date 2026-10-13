@@ -183,6 +183,9 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .edu .sec-label { margin-bottom: 24px; }
 .edu-card { display: grid; gap: 8px; padding: 24px 28px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); }
 .edu-card h3 { margin: 0; font: 700 clamp(1.4rem, 3vw, 1.8rem)/1.1 var(--display); }
+.edu-card .lead { max-width: 75ch; }
+.edu-link { justify-self: start; font-size: .92rem; color: var(--type); text-decoration: none; }
+.edu-link:hover { text-decoration: underline; }
 
 /* XRoam has no screenshots of its own: Univrse projects built with it take the media slot, captioned as theirs */
 .tiles-wrap { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
@@ -255,7 +258,7 @@ footer p { margin: 0; color: var(--muted); }
       <p class="eyebrow">Unity Developer · Barcelona</p>
       <h1>Marc de Pedro</h1>
       <p class="lede">Unity developer with <b>6+ years</b> shipping games and VR software. I've <b>co-founded two indie studios</b>, <b>released games on Steam and Epic</b>, and been part of the team that shipped <b>the industry's SDK standard for large-scale multiplayer VR experiences</b>.</p>
-      <p class="lede">I focus on gameplay and tools, from content pipelines that let designers work without code to VR networking, but I like owning systems end to end: architecture, tooling and everything it takes to ship.</p>
+      <p class="lede">I focus on gameplay and tools, from designer-friendly content pipelines to VR networking, and I like owning systems end to end, from architecture to shipping.</p>
       <div class="actions">
         <a class="btn" href="https://github.com/marcdp1997">GitHub ↗</a>
         <a class="btn" href="https://www.linkedin.com/in/marcdp1997">LinkedIn ↗</a>
@@ -322,7 +325,6 @@ footer p { margin: 0; color: var(--muted); }
           <button type="button" aria-pressed="false" data-filter="games">Game Development</button>
           <button type="button" aria-pressed="false" data-filter="vr">VR</button>
           <button type="button" aria-pressed="false" data-filter="serious">Serious Games</button>
-          <button type="button" aria-pressed="false" data-filter="teaching">Teaching</button>
         </div>
       </div>
       <ol class="timeline">
@@ -359,7 +361,7 @@ footer p { margin: 0; color: var(--muted); }
                 <ul class="did">
                   <li>Sole Unity developer on a four-person team: own the core architecture, gameplay systems and in-game art implementation.</li>
                   <li>To speed up puzzle design, built a procedural puzzle generator: designers generate puzzles from difficulty and house layout, try them in the game and export the ones they like as JSON.</li>
-                  <li>Built one-click importers that turn those puzzles and the visual-novel scenes (Excel → JSON) into ScriptableObjects, so new content reaches the game without writing any code.</li>
+                  <li>Built an import pipeline that brings every visual-novel scene and puzzle into the game as ScriptableObjects. Today that is 100+ scenes and 40+ puzzles, imported in one click, so the team can test new puzzles and iterate on the narrative really fast.</li>
                 </ul>
                 <div class="links"><a class="btn" href="https://store.steampowered.com/app/4754310/The_Singular_Ones/">Wishlist on Steam ↗</a></div>
               </div>
@@ -403,28 +405,6 @@ footer p { margin: 0; color: var(--muted); }
                   <li>Covered the full release scope: control remapping with Unity's new Input System, localization into 8 languages, colorblind options and Steam achievements.</li>
                 </ul>
                 <div class="links"><a class="btn" href="https://store.steampowered.com/app/3954440/RESEED/">View on Steam ↗</a></div>
-              </div>
-          </div>
-        </article>
-      </li>
-      <li class="entry" id="zero-to-hero" data-type="teaching">
-        <header class="co">
-          <p class="when">Oct 2026 – Nov 2026 <span class="dur">· 2 mos</span></p>
-          <h3>Biblioteques de Barcelona</h3>
-          <p class="co-role">Unity Instructor <span class="co-type">· Weekly workshop</span></p>
-          <p class="co-about">Public library network that runs free workshops for kids and teens.</p>
-        </header>
-        <article class="card">
-          <div class="body">
-              <div class="info">
-                <header class="card-head">
-                  <h4>“From Zero to Hero”</h4>
-                  <ul class="chips"><li>Teaching</li></ul>
-                </header>
-                <p class="lead">Introductory game development workshop in Unity for teens aged 12–15. Students go from zero experience to building their own playable game, learning programming basics, game logic and teamwork along the way.</p>
-                <dl class="facts">
-                  <div><dt>Where</dt><dd><a href="https://ajuntament.barcelona.cat/biblioteques/ca/bibcanfabra/activities/99400785077">Biblioteca Can Fabra ↗</a></dd></div>
-                </dl>
               </div>
           </div>
         </article>
@@ -565,6 +545,19 @@ footer p { margin: 0; color: var(--muted); }
         </article>
       </li>
       </ol>
+    </div>
+  </section>
+
+  <section class="edu" id="teaching">
+    <div class="wrap">
+      <h2 class="sec-label">Teaching</h2>
+      <article class="edu-card" data-type="teaching">
+        <p class="when">2026</p>
+        <h3>Unity Instructor</h3>
+        <p class="role"><b>Biblioteques de Barcelona</b> · Weekly workshop</p>
+        <p class="lead">Teaching “From Zero to Hero”, an introductory game development workshop in Unity for teens aged 12–15. Students go from zero experience to building their own playable game, learning programming basics, game logic and teamwork along the way.</p>
+        <a class="edu-link" href="https://ajuntament.barcelona.cat/biblioteques/ca/bibcanfabra/activities/99400785077">Biblioteca Can Fabra ↗</a>
+      </article>
     </div>
   </section>
 
