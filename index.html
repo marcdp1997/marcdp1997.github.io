@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Marc de Pedro Portfolio</title>
-<meta name="description" content="Marc de Pedro, Unity developer in Barcelona. Gameplay, tools and multi-user VR. Shipped games on Steam &amp; Epic.">
+<meta name="description" content="Marc de Pedro, Unity developer in Barcelona. Co-founded two indie studios, shipped games on Steam &amp; Epic, helped build a multi-user VR SDK. Gameplay and tools.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://marcdp1997.github.io/">
 <meta property="og:title" content="Marc de Pedro · Unity Developer">
@@ -77,14 +77,17 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 /* XRoam is a toolset, not a game: just its logo on black, same 16:9 slot as the screenshots */
 .hl-logo { display: grid; place-items: center; aspect-ratio: 16 / 9; background: #000; }
 .hl-logo img { width: 62%; aspect-ratio: auto; object-fit: contain; }
-.hl-body { display: grid; gap: 10px; align-content: start; padding: 18px 20px 20px; }
+.hl-body { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 20px; }
+.hl-body .chips { margin-top: auto; }
 .hl h3 { margin: 0; display: flex; align-items: center; gap: 10px; font: 700 1.6rem/1.05 var(--display); }
 .hl h3::before { content: ""; flex: none; width: 12px; height: 12px; border-radius: 50%; border: 3px solid var(--type); }
-.hl-co { margin: -4px 0 4px; font-weight: 600; color: var(--muted); }
-.hl-stat { margin: 0; display: grid; gap: 2px; }
-.hl-stat b { font: 600 1.7rem/1.1 var(--display); color: var(--type); }
-.hl-stat span { font-size: .85rem; color: var(--muted); }
-.hl-more { margin-top: 4px; font: 500 .82rem/1 var(--mono); color: var(--muted); }
+.hl-co { margin: -4px 0 0; font-weight: 600; color: var(--muted); }
+.hl-desc { margin: 0; font-size: .9rem; line-height: 1.45; color: var(--muted); }
+/* genre line + chips: what it is, area and mode first (in the type colour), then platform and key tech */
+.genre { margin: 0; font-size: .95rem; color: var(--muted); }
+.chips { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.chips li { font: 500 .72rem/1 var(--mono); padding: 5px 8px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
+.chips .key { color: var(--type); border-color: color-mix(in srgb, var(--type) 45%, transparent); }
 .sec-label { margin: 0; font: 600 1.5rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .exp-head { display: grid; gap: 20px; margin-bottom: 40px; }
 .filters { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -99,52 +102,68 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 [data-type="vr"], [data-filter="vr"] { --type: #5aa9ff; }
 [data-type="serious"], [data-filter="serious"] { --type: #4fd1a5; }
 [data-type="teaching"], [data-filter="teaching"] { --type: #c792ea; }
-.entry { position: relative; display: grid; gap: 12px; }
+.entry { position: relative; display: grid; gap: 20px; }
 .entry[hidden] { display: none; }
-.entry::before { content: ""; position: absolute; z-index: 1; left: -36px; top: 1px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--type); }
-.when { margin: 0; font: 500 .85rem/18px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
+.entry::before { content: ""; position: absolute; z-index: 1; left: -36px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--type); }
+.when { margin: 0; font: 500 1rem/22px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
 .when .now { color: inherit; }
-.when .at { display: block; margin-top: 6px; color: var(--muted); }
-.when .at b { color: var(--ink); font-weight: 500; }
+/* company header: dates, company, role and what the company is; its projects follow as smaller cards */
+.co { display: grid; gap: 6px; }
+.co h3 { margin: 4px 0 0; font: 700 clamp(2rem, 5vw, 3rem)/1 var(--display); text-wrap: balance; }
+.co-role { margin: 0; font: 600 1.15rem/1.3 var(--body); color: var(--type); }
+.co-about { margin: 2px 0 0; color: var(--muted); }
 .entry { scroll-margin-top: 80px; }
 .type { font: 500 .72rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 6px 9px; border-radius: 4px; color: var(--type); border: 1px solid var(--type); background: color-mix(in srgb, var(--type) 10%, transparent); }
 
-.card { display: grid; gap: 24px; padding: 28px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); }
-.card-head { display: grid; gap: 12px; }
+.card { display: grid; gap: 16px; padding: 18px 20px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); scroll-margin-top: 80px; }
+/* several projects at one company: one timeline dot, cards stacked; a card's own data-type overrides the entry's for colour and filtering */
+.card[hidden] { display: none; }
+.card-head { display: grid; gap: 6px; }
 .card-head .tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.card h3 { margin: 0; font: 700 clamp(1.8rem, 4vw, 2.6rem)/1 var(--display); text-wrap: balance; }
+.card h4 { margin: 0; font: 700 clamp(1.4rem, 3vw, 1.8rem)/1.05 var(--display); text-wrap: balance; }
 .role { margin: 0; font-size: 1.05rem; color: var(--muted); }
 .role b { color: var(--ink); font-weight: 600; }
-.body { display: grid; gap: 32px; align-items: start; }
-.body.media { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
+.body { display: grid; gap: 24px; align-items: start; }
+/* two columns that end at the same height: screenshots keep their native 16:9, XRoam tiles stretch, the button sits at the bottom */
+.body.media { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: stretch; }
+/* XRoam only: text first, built-with projects on the right */
+.body.media-right { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+.body.game { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 
-.shots { display: grid; gap: 8px; min-width: 0; }
-.stage { position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #000; }
+.shots { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.shots .card-head { margin-bottom: 6px; }
+.stage { flex: none; position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #000; }
 .stage img, .stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .stage video { z-index: 1; }
-.play { position: absolute; left: 14px; bottom: 14px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: 600 .9rem/1 var(--body); cursor: pointer; box-shadow: 0 4px 18px rgb(0 0 0 / .45); }
+.play { position: absolute; left: 10px; bottom: 10px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border: 0; border-radius: 6px; background: var(--accent); color: var(--on-accent); font: 600 .82rem/1 var(--body); cursor: pointer; box-shadow: 0 4px 18px rgb(0 0 0 / .45); }
 .play svg { width: 12px; height: 12px; fill: currentColor; }
 .play:hover { filter: brightness(1.08); }
 .stage.playing .play { display: none; }
-.thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .thumbs button { padding: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: none; cursor: pointer; aspect-ratio: 16 / 9; opacity: .55; transition: opacity .15s, border-color .15s; }
 .thumbs button img { width: 100%; height: 100%; object-fit: cover; }
 .thumbs button:hover, .thumbs button[aria-pressed="true"] { opacity: 1; border-color: var(--accent); }
 
-.info { display: grid; gap: 18px; align-content: start; min-width: 0; }
-.lead { margin: 0; color: var(--muted); max-width: 62ch; }
+.info { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.info .links { margin-top: auto; }
+.lead { margin: 0; font-size: .92rem; color: var(--muted); max-width: 75ch; }
+.did-label { margin: 0 0 -6px; font: 500 .68rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .stats { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 0; padding: 0; }
 .stats div { display: flex; flex-direction: column-reverse; }
-.stats dd { margin: 0; font: 600 1.7rem/1.1 var(--display); color: var(--type); font-variant-numeric: tabular-nums; }
+/* XRoam: its numbers belong to the experiences built with it, so they get a caption and the quick-info frame */
+.stats-block { display: grid; gap: 8px; padding-block: 10px; border-block: 1px solid var(--line); }
+.stats-cap { margin: 0; font: 500 .68rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.stats dd { margin: 0; font: 600 1.4rem/1.1 var(--display); color: var(--type); font-variant-numeric: tabular-nums; }
 .stats dt { font-size: .8rem; color: var(--muted); }
-.did { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: .95rem; }
-.did li { position: relative; padding-left: 22px; max-width: 70ch; }
+.did { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: .9rem; }
+.did li { position: relative; padding-left: 22px; max-width: 75ch; }
 .did li::before { content: ""; position: absolute; left: 0; top: .62em; width: 10px; height: 2px; background: var(--type); }
-.facts { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px 20px; padding-top: 16px; border-top: 1px solid var(--line); }
+.facts { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 10px 16px; padding-block: 10px; border-block: 1px solid var(--line); }
+.info > .facts:first-child { padding-top: 4px; border-top: 0; }
 .facts div { display: grid; align-content: start; gap: 3px; }
 .facts dt { font: 500 .68rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .facts dd { margin: 0; font-size: .92rem; line-height: 1.35; }
-.facts a { color: var(--type); text-decoration: none; }
+.facts a { color: var(--type); text-decoration: none; white-space: nowrap; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; }
 .badge { font: 500 .72rem/1 var(--mono); padding: 6px 9px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
 
@@ -154,10 +173,10 @@ h1 { margin: 0; font: 700 clamp(3rem, 9vw, 5.6rem)/.9 var(--display); letter-spa
 .edu-card h3 { margin: 0; font: 700 clamp(1.4rem, 3vw, 1.8rem)/1.1 var(--display); }
 
 /* XRoam has no screenshots of its own: Univrse projects built with it take the media slot, captioned as theirs */
-.tiles-wrap { display: grid; gap: 10px; min-width: 0; }
+.tiles-wrap { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .tiles-cap { margin: 0; font: 500 .72rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.tiles { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.tiles a { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); text-decoration: none; transition: border-color .15s, transform .15s; }
+.tiles { flex: 1 0 auto; margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(90px, 1fr); gap: 8px; }
+.tiles a { position: relative; display: block; height: 100%; overflow: hidden; border-radius: 8px; background: var(--bg); border: 1px solid var(--line); text-decoration: none; transition: border-color .15s, transform .15s; }
 .tiles a::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgb(0 0 0 / .8) 0%, rgb(0 0 0 / .1) 60%); }
 .tiles img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
 .tiles a:hover { border-color: var(--type); transform: translateY(-2px); }
@@ -178,17 +197,22 @@ footer p { margin: 0; color: var(--muted); }
 .contact a { font: 600 clamp(1.2rem, 3vw, 1.6rem)/1.2 var(--display); color: var(--accent); text-decoration: none; overflow-wrap: anywhere; }
 .contact a:hover { text-decoration: underline; }
 
+/* below ~1080px two columns would crop the screenshots too much: stack them */
+@media (max-width: 1080px) {
+  .body.media { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .tiles { grid-auto-rows: auto; }
+  .tiles a { height: auto; aspect-ratio: 16 / 9; }
+}
 @media (max-width: 860px) {
   .hero-in { padding-block: 64px 48px; }
   .mosaic { grid-template-columns: 1fr 1fr; }
   .mosaic img:nth-child(3) { display: none; }
   .hero::after { background: linear-gradient(0deg, var(--bg) 10%, color-mix(in srgb, var(--bg) 78%, transparent) 100%); }
   .bar nav { gap: 14px; }
-  .body.media { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .hl-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 480px) {
-  .card { padding: 20px; }
+  .card { padding: 18px; }
   .timeline { padding-left: 28px; }
   .entry::before { left: -28px; }
 }
@@ -218,7 +242,8 @@ footer p { margin: 0; color: var(--muted); }
       <img class="avatar" src="media/img/marc.jpg" alt="Marc de Pedro">
       <p class="eyebrow">Unity Developer · Barcelona</p>
       <h1>Marc de Pedro</h1>
-      <p class="lede">Unity developer with <b>6+ years</b> of experience shipping games and VR software. I've co-founded two indie studios, released games on Steam and Epic, and worked on the networking and editor tools of a multi-user VR SDK. I like owning systems end to end: gameplay, architecture, tooling and everything it takes to ship.</p>
+      <p class="lede">Unity developer with <b>6+ years</b> shipping games and VR software. I've <b>co-founded two indie studios</b>, <b>released games on Steam and Epic</b>, and was part of the team that shipped <b>the industry's SDK standard for large scale multiplayer VR experiences</b>.</p>
+      <p class="lede">I focus on gameplay and tools, from content pipelines that let designers work without code to VR networking, but I like owning systems end to end: architecture, tooling and everything it takes to ship.</p>
       <div class="actions">
         <a class="btn" href="https://github.com/marcdp1997">GitHub ↗</a>
         <a class="btn" href="https://www.linkedin.com/in/marcdp1997">LinkedIn ↗</a>
@@ -236,31 +261,28 @@ footer p { margin: 0; color: var(--muted); }
           <a class="hl" href="#deflector" data-type="games">
             <img src="media/img/deflector-2.jpg" alt="" loading="lazy">
             <div class="hl-body">
-              
               <h3>Deflector</h3>
               <p class="hl-co">Arrowfist Games</p>
-              <p class="hl-stat"><b>~20k copies</b><span>87% positive on Steam · Steam &amp; Epic</span></p>
-              <span class="hl-more">See more ↓</span>
+              <p class="hl-desc">Top-down action roguelite where you deflect enemy projectiles back at your foes. Incubated in the 5th edition of GameBCN, released on Steam and Epic and ported to consoles.</p>
+              <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>Single-player</li><li>Gameplay</li><li>Enemy AI</li></ul>
             </div>
           </a>
           <a class="hl" href="#xroam" data-type="vr">
             <div class="hl-logo"><img src="media/img/xroam-logo.png" alt="XRoam"></div>
             <div class="hl-body">
-              
               <h3>XRoam SDK</h3>
               <p class="hl-co">UNIVRSE</p>
-              <p class="hl-stat"><b>Location-based VR toolset</b><span>50+ users per session · 130+ installations · 4M+ visitors on experiences built with it</span></p>
-              <span class="hl-more">See more ↓</span>
+              <p class="hl-desc">Toolset to create, deploy and run multi-user, location-based VR experiences on Pico headsets.</p>
+              <ul class="chips"><li>Unity</li><li>C#</li><li>VR</li><li>Multi-user</li><li>Tooling</li><li>XR Interaction Toolkit</li><li>Pico</li></ul>
             </div>
           </a>
           <a class="hl" href="#singular-ones" data-type="games">
             <img src="media/img/singular-hero.jpg" alt="" loading="lazy">
             <div class="hl-body">
-              
               <h3>The Singular Ones</h3>
               <p class="hl-co">Bearded Pixels Games</p>
-              <p class="hl-stat"><b>Q1 2027</b><span>Coming to Steam</span></p>
-              <span class="hl-more">See more ↓</span>
+              <p class="hl-desc">Cozy logic-mystery puzzle game: place characters and objects in rooms under coexistence rules, between visual-novel scenes.</p>
+              <ul class="chips"><li>Unity</li><li>C#</li><li>2D</li><li>Hand-drawn</li><li>Single-player</li><li>Gameplay</li><li>Tooling</li></ul>
             </div>
           </a>
         </div>
@@ -277,14 +299,19 @@ footer p { margin: 0; color: var(--muted); }
       </div>
       <ol class="timeline">
       <li class="entry" id="singular-ones" data-type="games">
-        <p class="when">Oct 2025 – <span class="now">Present</span> <span class="at"><b>Bearded Pixels Games</b> · Unity Developer</span></p>
+        <header class="co">
+          <p class="when">Oct 2025 – <span class="now">Present</span></p>
+          <h3>Bearded Pixels Games</h3>
+          <p class="co-role">Unity Developer</p>
+          <p class="co-about">Small indie studio that develops and self-publishes its own games.</p>
+        </header>
         <article class="card">
-          <header class="card-head">
-            <div class="tags"><span class="badge">Coming Q1 2027</span></div>
-            <h3>The Singular Ones</h3>
-          </header>
-          <div class="body media">
+          <div class="body media game">
               <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/4754310/788719265/bf53c22b9369df2d5a8b7f0c2a550607ce240f05/1779184134/hls_264_master.m3u8?t=1780572088">
+                <header class="card-head">
+                  <h4>The Singular Ones</h4>
+                  <ul class="chips"><li>Unity</li><li>C#</li><li>2D</li><li>Hand-drawn</li><li>Single-player</li><li>Gameplay</li><li>Tooling</li></ul>
+                </header>
                 <div class="stage"><img src="media/img/singular-3.jpg" alt="The Singular Ones screenshot"></div>
                 <div class="thumbs">
                   <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/singular-3.jpg" alt=""></button>
@@ -294,31 +321,37 @@ footer p { margin: 0; color: var(--muted); }
                 </div>
               </div>
               <div class="info">
-                <p class="lead">Sole Unity developer on a four-person team.</p>
-                <ul class="did">
-                  <li>Own the core architecture, gameplay systems and in-game art implementation.</li>
-                  <li>Designed a procedural puzzle generator that builds configurable puzzles from difficulty and house layout.</li>
-                  <li>Built a content pipeline that imports puzzle designs and visual novel scenes from Excel into the game through JSON.</li>
-                </ul>
                 <dl class="facts">
                   <div><dt>Team</dt><dd>4 people</dd></div>
                   <div><dt>Release</dt><dd>Q1 2027</dd></div>
                   <div><dt>Platform</dt><dd>PC (Steam)</dd></div>
                 </dl>
+                <p class="lead">Help a group of teenagers with unique powers uncover the mystery of the Soul Mirror in this cozy logic mystery puzzle game. Place characters and objects in the right rooms at Corvane Academy by following a set of coexistence rules.</p>
+                <p class="did-label">What I did</p>
+                <ul class="did">
+                  <li>Sole Unity developer on a four-person team: own the core architecture, gameplay systems and in-game art implementation.</li>
+                  <li>Designed a procedural puzzle generator so designers create levels automatically from difficulty and house layout; they only decide the order puzzles appear in the game.</li>
+                  <li>Built one-click importers that turn the designers' puzzle data (Excel → JSON) and visual novel scenes into ScriptableObjects, so new content reaches the game without writing any code.</li>
+                </ul>
                 <div class="links"><a class="btn" href="https://store.steampowered.com/app/4754310/The_Singular_Ones/">Wishlist on Steam ↗</a></div>
               </div>
           </div>
         </article>
       </li>
       <li class="entry" id="reseed" data-type="games">
-        <p class="when">Jun 2025 – <span class="now">Present</span> <span class="at"><b>Headless Division</b> · Co-founder &amp; Unity Developer</span></p>
+        <header class="co">
+          <p class="when">Jun 2025 – <span class="now">Present</span></p>
+          <h3>Headless Division</h3>
+          <p class="co-role">Co-founder &amp; Unity Developer</p>
+          <p class="co-about">Three-person indie studio focused on rapid prototyping to create small but creative games.</p>
+        </header>
         <article class="card">
-          <header class="card-head">
-            <div class="tags"><span class="badge">Released Apr 2026</span></div>
-            <h3>RESEED</h3>
-          </header>
-          <div class="body media">
+          <div class="body media game">
               <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/3954440/1740601381/3aed9861b669e9296e61c71306db50ca59ad4b82/1771756458/hls_264_master.m3u8?t=1771756754">
+                <header class="card-head">
+                  <h4>RESEED</h4>
+                  <ul class="chips"><li>Unity</li><li>C#</li><li>2D</li><li>Pixel Art</li><li>Single-player</li><li>Gameplay</li></ul>
+                </header>
                 <div class="stage"><img src="media/img/reseed-1.jpg" alt="RESEED gameplay screenshot"></div>
                 <div class="thumbs">
                   <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/reseed-1.jpg" alt=""></button>
@@ -328,31 +361,38 @@ footer p { margin: 0; color: var(--muted); }
                 </div>
               </div>
               <div class="info">
-                <p class="lead">The first game of Headless Division, our studio for rapid prototyping and small, original games.</p>
-                <ul class="did">
-                  <li>Programmed the entire game, from the initial idea and design to the final release.</li>
-                  <li>Implemented control remapping with Unity's new Input System and localization into 8 languages.</li>
-                  <li>Integrated Steam achievements.</li>
-                </ul>
                 <dl class="facts">
                   <div><dt>Team</dt><dd>2 people</dd></div>
                   <div><dt>Development</dt><dd>3 months</dd></div>
-                  <div><dt>Released</dt><dd>Apr 16, 2026</dd></div>
+                  <div><dt>Released</dt><dd>Apr 2026</dd></div>
                   <div><dt>Platform</dt><dd>PC (Steam)</dd></div>
                 </dl>
-                <div class="links"><a class="btn" href="https://store.steampowered.com/app/3954440/RESEED/">Steam page ↗</a></div>
+                <p class="lead">RESEED is a puzzle platformer about planning. Record your path through a safe level, then watch it execute through the same level, now filled with traps. Will the seed survive?</p>
+                <p class="did-label">What I did</p>
+                <ul class="did">
+                  <li>Programmed the entire game and shipped it on Steam in 3 months, from first prototype to release.</li>
+                  <li>Built the record-and-replay core loop that captures the player's planned path and replays it through the trap-filled level.</li>
+                  <li>Covered the full release scope: control remapping with Unity's new Input System, localization into 8 languages, colorblind options and Steam achievements.</li>
+                </ul>
+                <div class="links"><a class="btn" href="https://store.steampowered.com/app/3954440/RESEED/">View on Steam ↗</a></div>
               </div>
           </div>
         </article>
       </li>
       <li class="entry" id="zero-to-hero" data-type="teaching">
-        <p class="when">Oct 2026 – Nov 2026 <span class="at"><b>Biblioteques de Barcelona</b> · Unity Instructor</span></p>
+        <header class="co">
+          <p class="when">Oct 2026 – Nov 2026</p>
+          <h3>Biblioteques de Barcelona</h3>
+          <p class="co-role">Unity Instructor</p>
+          <p class="co-about">Public library network that runs free workshops for kids and teens.</p>
+        </header>
         <article class="card">
-          <header class="card-head">
-            <h3>“From Zero to Hero”</h3>
-          </header>
           <div class="body">
               <div class="info">
+                <header class="card-head">
+                  <h4>“From Zero to Hero”</h4>
+                  <ul class="chips"><li>Teaching</li></ul>
+                </header>
                 <p class="lead">Intro to game development workshop in Unity for teens aged 12–15. Students go from zero experience to building their own playable game, learning programming basics, game logic and teamwork along the way.</p>
                 <dl class="facts">
                   <div><dt>Where</dt><dd><a href="https://ajuntament.barcelona.cat/biblioteques/ca/bibcanfabra/activities/99400785077">Biblioteca Can Fabra ↗</a></dd></div>
@@ -362,14 +402,21 @@ footer p { margin: 0; color: var(--muted); }
         </article>
       </li>
       <li class="entry" id="driving-sim" data-type="serious">
-        <p class="when">Feb 2026 – Jun 2026 <span class="at"><b>Cookie Box Group</b> · Unity Developer</span></p>
+        <header class="co">
+          <p class="when">Feb 2026 – Jun 2026</p>
+          <h3>Cookie Box Group</h3>
+          <p class="co-role">Unity Developer</p>
+          <p class="co-about">Consultancy specialised in gamification, storytelling and serious games for corporate clients.</p>
+        </header>
         <article class="card">
-          <header class="card-head">
-            <h3>3D Driving Simulator</h3>
-          </header>
           <div class="body">
               <div class="info">
+                <header class="card-head">
+                  <h4>3D Driving Simulator</h4>
+                  <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>WebGL</li><li>Serious Games</li></ul>
+                </header>
                 <p class="lead">A serious game about risk prevention for Egarsat, playable in the browser.</p>
+                <p class="did-label">What I did</p>
                 <ul class="did">
                   <li>Joined mid-development and got up to speed with the existing codebase without disrupting the team.</li>
                   <li>Delivered the full 3D implementation on a tight deadline: asset integration, lighting, physics and gameplay.</li>
@@ -380,30 +427,29 @@ footer p { margin: 0; color: var(--muted); }
         </article>
       </li>
       <li class="entry" id="xroam" data-type="vr">
-        <p class="when">Jan 2024 – May 2025 <span class="at"><b>UNIVRSE</b> · Mid Unity Developer</span></p>
+        <header class="co">
+          <p class="when">Jan 2024 – May 2025</p>
+          <h3>UNIVRSE</h3>
+          <p class="co-role">Mid Unity Developer</p>
+          <p class="co-about">Company building multi-user, location-based VR experiences for museums, festivals and brands.</p>
+        </header>
         <article class="card">
-          <header class="card-head">
-            <h3>XRoam SDK</h3>
-          </header>
-          <div class="body media">
-              <div class="tiles-wrap">
-              <p class="tiles-cap" id="xroam-cap">Univrse projects built with XRoam</p>
-              <ul class="tiles" aria-labelledby="xroam-cap">
-                <li><a href="https://www.univr.se/project/tomorrowland"><img src="media/img/xroam-tomorrowland.jpg" alt="" loading="lazy"><span class="t">Tomorrowland</span></a></li>
-                <li><a href="https://www.univr.se/project/titanic"><img src="media/img/xroam-titanic.jpg" alt="" loading="lazy"><span class="t">Titanic</span></a></li>
-                <li><a href="https://www.univr.se/project/spellbound"><img src="media/img/xroam-spellbound.jpg" alt="" loading="lazy"><span class="t">Spellbound</span></a></li>
-                <li><a href="https://www.univr.se/project/cogul"><img src="media/img/xroam-cogul.jpg" alt="" loading="lazy"><span class="t">Cogul</span></a></li>
-                <li><a href="https://www.univr.se/project/finding-vincent"><img src="media/img/xroam-finding-vincent.jpg" alt="" loading="lazy"><span class="t">Finding Vincent</span></a></li>
-                <li class="all"><a href="https://www.univr.se/projects"><span class="t">All Univrse projects ↗</span></a></li>
-              </ul>
-              </div>
+          <div class="body media media-right">
               <div class="info">
-                <p class="lead">I was part of the team that developed the XRoam SDK, a user-friendly ecosystem to create, deploy and run location-based VR experiences on Pico headsets.</p>
-                <dl class="stats">
-                  <div><dt>users per session</dt><dd>50+</dd></div>
-                  <div><dt>installations</dt><dd>130+</dd></div>
-                  <div><dt>visitors</dt><dd>4M+</dd></div>
-                </dl>
+                <header class="card-head">
+                  <h4>XRoam SDK</h4>
+                  <ul class="chips"><li>Unity</li><li>C#</li><li>VR</li><li>Multi-user</li><li>Tooling</li><li>XR Interaction Toolkit</li><li>Pico</li></ul>
+                </header>
+                <p class="lead">A user-friendly ecosystem to create, deploy and run location-based VR experiences on Pico headsets. I was part of the team that built it.</p>
+                <div class="stats-block">
+                  <p class="stats-cap">Across all experiences built with XRoam</p>
+                  <dl class="stats">
+                    <div><dt>users per session</dt><dd>50+</dd></div>
+                    <div><dt>installations</dt><dd>130+</dd></div>
+                    <div><dt>visitors</dt><dd>4M+</dd></div>
+                  </dl>
+                </div>
+                <p class="did-label">What I did</p>
                 <ul class="did">
                   <li>Reworked most of the FishNet core networking to keep shared sessions of 50+ headsets stable and reliable.</li>
                   <li>Created editor tools with Custom Inspectors and UI Toolkit windows that let creators build multi-user experiences with little or no code.</li>
@@ -412,18 +458,34 @@ footer p { margin: 0; color: var(--muted); }
                 </ul>
                 <div class="links"><a class="btn" href="https://solutions.xroam.com/">XRoam ↗</a></div>
               </div>
+              <div class="tiles-wrap">
+                <p class="tiles-cap" id="xroam-cap">Univrse projects built with XRoam</p>
+                <ul class="tiles" aria-labelledby="xroam-cap">
+                  <li><a href="https://www.univr.se/project/tomorrowland"><img src="media/img/xroam-tomorrowland.jpg" alt="" loading="lazy"><span class="t">Tomorrowland</span></a></li>
+                  <li><a href="https://www.univr.se/project/titanic"><img src="media/img/xroam-titanic.jpg" alt="" loading="lazy"><span class="t">Titanic</span></a></li>
+                  <li><a href="https://www.univr.se/project/spellbound"><img src="media/img/xroam-spellbound.jpg" alt="" loading="lazy"><span class="t">Spellbound</span></a></li>
+                  <li><a href="https://www.univr.se/project/cogul"><img src="media/img/xroam-cogul.jpg" alt="" loading="lazy"><span class="t">Cogul</span></a></li>
+                  <li><a href="https://www.univr.se/project/finding-vincent"><img src="media/img/xroam-finding-vincent.jpg" alt="" loading="lazy"><span class="t">Finding Vincent</span></a></li>
+                  <li class="all"><a href="https://www.univr.se/projects"><span class="t">All Univrse projects ↗</span></a></li>
+                </ul>
+              </div>
           </div>
         </article>
       </li>
       <li class="entry" id="deflector" data-type="games">
-        <p class="when">Feb 2020 – Dec 2023 <span class="at"><b>Arrowfist Games</b> · Co-founder &amp; Unity Developer</span></p>
+        <header class="co">
+          <p class="when">Feb 2020 – Dec 2023</p>
+          <h3>Arrowfist Games</h3>
+          <p class="co-role">Co-founder &amp; Unity Developer</p>
+          <p class="co-about">Seven-person indie studio, incubated in the 5th edition of GameBCN.</p>
+        </header>
         <article class="card">
-          <header class="card-head">
-            <div class="tags"><span class="badge">Released Mar 2023</span></div>
-            <h3>Deflector</h3>
-          </header>
-          <div class="body media">
+          <div class="body media game">
               <div class="shots" data-trailer="https://video.akamai.steamstatic.com/store_trailers/1736550/551523/a86c25e3b011ff77da19d4791953a373c15e7436/1751025667/hls_264_master.m3u8?t=1679669634">
+                <header class="card-head">
+                  <h4>Deflector</h4>
+                  <ul class="chips"><li>Unity</li><li>C#</li><li>3D</li><li>Single-player</li><li>Gameplay</li><li>Enemy AI</li></ul>
+                </header>
                 <div class="stage"><img src="media/img/deflector-1.jpg" alt="Deflector gameplay screenshot"></div>
                 <div class="thumbs">
                   <button type="button" aria-pressed="true" aria-label="Screenshot 1"><img src="media/img/deflector-1.jpg" alt=""></button>
@@ -433,22 +495,25 @@ footer p { margin: 0; color: var(--muted); }
                 </div>
               </div>
               <div class="info">
-                <p class="lead">Incubated in the 5th edition of GameBCN and published by SuperGG.</p>
+                <dl class="facts">
+                  <div><dt>Team</dt><dd>7 people</dd></div>
+                  <div><dt>Development</dt><dd>3 years</dd></div>
+                  <div><dt>Released</dt><dd>Mar 2023</dd></div>
+                  <div><dt>Platforms</dt><dd>PC · Consoles</dd></div>
+                </dl>
+                <p class="lead">Deflector is a top down action rogue-lite set in a deadly microcosm. Dive deep into hostile worlds teeming with viruses. Strike down increasingly challenging enemies with your weapons and their own deflected projectiles. Live, die, grow stronger and become powerful enough to reach the Source!</p>
                 <dl class="stats">
                   <div><dt>copies sold on Steam</dt><dd>~20k</dd></div>
                   <div><dt>positive, 280+ reviews</dt><dd>87%</dd></div>
                 </dl>
+                <p class="did-label">What I did</p>
                 <ul class="did">
-                  <li>Co-led Unity development: enemy and character systems, combat abilities, boss fights and game feel.</li>
-                  <li>Integrated Steamworks and Epic Online Services for achievements, analytics and more.</li>
+                  <li>Implemented every enemy AI, all playable characters, their skills, the biome hazards and the world randomization.</li>
+                  <li>Built the boss fights and polished game feel across combat.</li>
+                  <li>Built a system that imports all gameplay balancing data from JSON, so the team could test and iterate on design fast without touching code.</li>
+                  <li>Integrated Steamworks and Epic Online Services: achievements and analytics on both stores.</li>
                 </ul>
-                <dl class="facts">
-                  <div><dt>Team</dt><dd>7 people</dd></div>
-                  <div><dt>Development</dt><dd>3 years</dd></div>
-                  <div><dt>Released</dt><dd>Mar 24, 2023</dd></div>
-                  <div><dt>Platforms</dt><dd>PC (Steam, Epic) · consoles via external port</dd></div>
-                </dl>
-                <div class="links"><a class="btn" href="https://store.steampowered.com/app/1736550/Deflector/">Steam page ↗</a></div>
+                <div class="links"><a class="btn" href="https://store.steampowered.com/app/1736550/Deflector/">View on Steam ↗</a></div>
               </div>
           </div>
         </article>
@@ -535,7 +600,7 @@ footer p { margin: 0; color: var(--muted); }
     bar.classList.toggle('is-hidden', entries[0].isIntersecting);
   }, { rootMargin: '-64px 0px 0px 0px' }).observe(document.querySelector('.hero'));
 
-  // Type filters: hide timeline entries of other types.
+  // Type filters work per project card (a card's data-type, else its entry's); an entry hides when none of its cards match.
   var filters = document.querySelectorAll('.filters button');
 
   filters.forEach(function (f) {
@@ -543,18 +608,23 @@ footer p { margin: 0; color: var(--muted); }
       var type = f.dataset.filter;
       filters.forEach(function (o) { o.setAttribute('aria-pressed', o === f ? 'true' : 'false'); });
       document.querySelectorAll('.entry').forEach(function (e) {
-        var show = type === 'all' || e.dataset.type === type;
-        e.hidden = !show;
-        var st = e.querySelector('.stage');
-        if (!show && st) stopTrailer(st);
+        var any = false;
+        e.querySelectorAll('.card').forEach(function (c) {
+          var show = type === 'all' || (c.dataset.type || e.dataset.type) === type;
+          c.hidden = !show;
+          if (show) any = true;
+          var st = c.querySelector('.stage');
+          if (!show && st) stopTrailer(st);
+        });
+        e.hidden = !any;
       });
     });
   });
-  // A highlight pointing at an entry the current filter hides resets the filter first.
+  // A highlight pointing at a card the current filter hides resets the filter first.
   document.querySelectorAll('.hl').forEach(function (h) {
     h.addEventListener('click', function () {
       var target = document.querySelector(h.getAttribute('href'));
-      if (target && target.hidden) document.querySelector('[data-filter="all"]').click();
+      if (target && (target.hidden || target.closest('.entry').hidden)) document.querySelector('[data-filter="all"]').click();
     });
   });
 })();
